@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MathOlymTRAINER — Олимпиадалық ойлау интеллект-тренажёры</title>
+<style>
+:root{--b:#3157d5;--bg:#f4f7fb;--ink:#172033;--mut:#687386;--card:#fff;--line:#dfe5ef;--ok:#16734b;--warn:#9a6700;--bad:#b2332b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}.app{max-width:900px;margin:auto;padding:18px}.card{background:var(--card);border-radius:22px;padding:24px;margin:14px 0;box-shadow:0 10px 30px #17203310}.brand{font-weight:900;color:var(--b);letter-spacing:.7px}.mut{color:var(--mut);line-height:1.55}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.progress{height:9px;background:#e8edf5;border-radius:99px;overflow:hidden;margin-top:12px}.bar{height:100%;background:var(--b);transition:.25s}button{border:0;border-radius:13px;padding:13px 17px;font-size:15px;font-weight:800;cursor:pointer}.primary{background:var(--b);color:#fff}.ghost{background:#edf1f7;color:var(--ink)}.help{background:#fff7df;color:#735000;border:1px solid #e3c36d}textarea,select{width:100%;font:inherit;font-size:16px;border:1px solid #ccd5e3;border-radius:13px;padding:13px;background:#fff}textarea{min-height:115px;resize:vertical}label{display:block;font-weight:800;margin:15px 0 7px}.step{display:none}.step.active{display:block}.math{font-family:Georgia,serif;font-size:20px;line-height:1.6;background:#f8f9fc;border:1px solid #e4e8ef;border-radius:15px;padding:16px}.solution-step{border:1px solid var(--line);border-radius:15px;padding:15px;margin:10px 0}.solution-step b{display:block;margin-bottom:7px}.rating{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.rate{background:#f1f4f8;border:1px solid #dce2eb;color:var(--ink)}.rate.sel-ok{background:#eaf8f1;border-color:#77b99a;color:#125c3d}.rate.sel-q{background:#fff7df;border-color:#d9b55d;color:#735000}.rate.sel-bad{background:#fff0ee;border-color:#df918b;color:#8b2822}.options{display:grid;gap:10px}.opt{text-align:left;background:#f5f7fb;border:1px solid #dce2eb;color:var(--ink)}.opt.sel{border-color:var(--b);background:#edf2ff}.callout{border-radius:15px;padding:15px;margin:14px 0;line-height:1.55}.info{background:#edf2ff}.good{background:#eaf8f1;color:#125c3d}.warn{background:#fff7df;color:#735000}.badbox{background:#fff0ee;color:#7d2924}.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px}.pill{display:inline-block;padding:6px 9px;border-radius:99px;background:#edf2ff;color:var(--b);font-weight:800;font-size:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f8f9fc;border-radius:14px;padding:14px}.metric b{font-size:22px}.hidden{display:none!important}.subhead{font-weight:900;margin:18px 0 8px}.audit{border-left:4px solid #dce2eb;padding-left:12px;margin:10px 0}.locked{background:#f8f9fc;border:1px solid var(--line);border-radius:13px;padding:13px;white-space:pre-wrap}.status{font-size:13px;font-weight:800;color:var(--mut);margin-top:8px}.problem-preview{margin-top:10px;background:#f8f9fc;border:1px dashed #ccd5e3;border-radius:13px;padding:13px;min-height:54px;white-space:pre-wrap}.problem-preview:empty{display:none}
+.reviewer-card{border:1px solid #cdd9ff;background:#f7f9ff;border-radius:16px;padding:16px;margin:14px 0}.reviewer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.reviewer-item{background:#fff;border:1px solid #e0e6f2;border-radius:12px;padding:12px}.reviewer-item b{display:block;margin-bottom:5px}.reviewer-loading{color:#3157d5;font-weight:800}.reviewer-error{color:#8b2822;font-weight:700}.reviewer-ok{color:#125c3d;font-weight:800}@media(max-width:650px){.reviewer-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.app{padding:10px}.card{padding:18px}.grid2{grid-template-columns:1fr}.math{font-size:18px}}
+</style>
+
+<style>
+.mode-shell{max-width:980px;margin:40px auto;padding:18px}.mode-hero{background:#fff;border-radius:26px;padding:34px;box-shadow:0 10px 35px #17203312}.mode-hero h1{font-size:38px;margin:8px 0}.mode-hero p{color:#687386}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.mode-card{background:#fff;color:#172033;border:1px solid #e1e6ef;border-radius:24px;padding:28px;text-align:left;box-shadow:0 8px 25px #1720330c}.mode-card span{font-size:34px;display:block;margin-bottom:10px}.mode-card b{display:block;font-size:22px}.mode-card small{display:block;color:#687386;margin-top:8px;line-height:1.5}.mode-card:hover{border-color:#3157d5;transform:translateY(-1px)}
+.soc-top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.soc-tabs{display:flex;gap:8px;flex-wrap:wrap}.soc-tab{background:#edf1f7;color:#172033;padding:9px 12px}.soc-tab.active{background:#3157d5;color:#fff}.soc-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.soc-task{background:#fff;border:1px solid #e1e6ef;border-radius:18px;padding:17px;cursor:pointer}.soc-task:hover{border-color:#3157d5}.soc-task h3{margin:7px 0}.soc-task .meta{font-size:12px;color:#687386}.soc-source{font-size:12px;color:#687386;margin-top:8px}.soc-q{font-size:19px;font-weight:800;line-height:1.5;margin:16px 0}.soc-choice{width:100%;text-align:left;background:#f5f7fb;border:1px solid #dce2eb;color:#172033;margin:6px 0}.soc-choice:hover{border-color:#3157d5}.soc-choice.correct{background:#eaf8f1;border-color:#77b99a;color:#125c3d}.soc-choice.wrong{background:#fff0ee;border-color:#df918b;color:#8b2822}.soc-feedback{margin-top:12px;border-radius:14px;padding:13px;background:#edf2ff;line-height:1.5}.soc-hint{background:#fff7df;color:#735000}.soc-meter{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden}.soc-meter>div{height:100%;background:#3157d5}.soc-result{text-align:center;padding:24px}.soc-result .big{font-size:42px;font-weight:900;color:#3157d5}.soc-free{width:100%;min-height:95px}.soc-lock{background:#3157d5;color:#fff}.soc-back{background:#edf1f7;color:#172033}.soc-mini{font-size:13px;color:#687386}.soc-badge{display:inline-block;background:#edf2ff;color:#3157d5;padding:5px 9px;border-radius:99px;font-size:12px;font-weight:800;margin-right:5px}.soc-source-link{color:#3157d5;text-decoration:none}.soc-source-link:hover{text-decoration:underline}
+@media(max-width:700px){.mode-grid,.soc-list{grid-template-columns:1fr}.mode-hero h1{font-size:30px}}
+</style>
+<style>
+:root{--b:#073f8c;--sky:#eaf7ff;--sky2:#dff2ff;--ivory:#fffdf8;--gold:#b8782e;--gold2:#d6a15f;--ink:#07356f;--mut:#516987;--card:#fffefb;--line:#d8e8f2}
+body{background:linear-gradient(180deg,#f9fdff 0%,#edf8ff 48%,#fffaf2 100%);color:var(--ink);font-family:Arial,sans-serif}.mode-shell{max-width:1180px;margin:0 auto;padding:0 22px 34px}.premium-home{position:relative}.premium-nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:22px;background:rgba(255,255,255,.94);position:sticky;top:0;z-index:10;border-bottom:1px solid #e4edf4}.premium-logo{font-family:Georgia,serif;font-size:24px;font-weight:800;color:#073b7e}.m-mark{display:inline-flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:30px;color:var(--gold);margin-right:8px}.nav-links{display:flex;gap:22px}.nav-links a{color:#073b7e;text-decoration:none;font-size:14px;font-weight:700}.mode-hero{min-height:530px;border-radius:0 0 30px 30px;padding:58px 44px;background:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(234,247,255,.96) 46%,rgba(213,239,255,.9) 100%);box-shadow:0 16px 45px #0a4a7b16;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;overflow:hidden;position:relative}.mode-hero:after{content:'';position:absolute;right:-60px;top:-80px;width:430px;height:430px;border:46px double rgba(255,255,255,.58);border-radius:50%}.hero-copy{position:relative;z-index:2}.eyebrow{font-size:15px;margin-bottom:15px}.mode-hero h1{font-family:Georgia,serif;font-size:62px;line-height:1.01;color:#073f8c;margin:0 0 14px;letter-spacing:-1.5px}.hero-tag{font-family:Georgia,serif;color:#a96b2b;font-size:29px;font-weight:700;margin-bottom:15px}.mode-hero p{max-width:610px;color:#164b86;line-height:1.55;font-size:16px}.hero-actions{display:flex;align-items:center;gap:18px;margin-top:24px}.gold-btn,.premium-mode i{background:linear-gradient(135deg,#a96b2b,#d39a56);color:#fff}.gold-btn{padding:15px 34px;border-radius:28px}.voice-btn{background:#fff;color:#073f8c;border:1px solid #d7e5ef;border-radius:28px;padding:8px 17px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 18px #073f8c0d}.voice-btn>span:first-child{width:34px;height:34px;border:1px solid #b8782e;border-radius:50%;display:grid;place-items:center;color:#073f8c}.voice-btn span:last-child{display:flex;flex-direction:column;align-items:flex-start}.voice-btn small{font-weight:500}.hero-art{position:relative;z-index:2;min-height:390px}.book-stack{position:absolute;bottom:22px;left:15%;width:285px;transform:rotate(-1deg)}.book-stack div{background:#fffaf0;border:1px solid #e2c79f;border-radius:4px;padding:10px 18px;text-align:center;font-family:Georgia,serif;color:#774b24;box-shadow:0 5px 12px #6d431519}.gold-m{position:absolute;right:11%;bottom:110px;font-size:150px;font-weight:900;color:#c88a3f;text-shadow:0 10px 18px #6b3b1f22}.math-symbol{position:absolute;font-family:Georgia,serif;color:#a86c2b}.s1{top:35px;left:10%;font-size:31px}.s2{top:115px;left:30%;font-size:50px}.s3{right:5%;top:85px;font-size:55px}.mode-grid{gap:20px;margin-top:22px}.premium-mode{min-height:275px;background:linear-gradient(135deg,#effaff,#dff3ff);border-color:#cce9f7;position:relative;overflow:hidden;padding:28px 30px}.premium-mode:after{content:'';position:absolute;right:-55px;top:-70px;width:190px;height:240px;border:20px double rgba(255,255,255,.7);border-radius:45%}.premium-mode b{font-family:Georgia,serif;color:#073f8c;font-size:31px}.premium-mode small{font-size:14px;color:#164b86;max-width:78%;position:relative;z-index:2}.premium-mode i{font-style:normal;display:inline-block;margin-top:20px;padding:11px 18px;border-radius:22px;position:relative;z-index:2}.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:24px 0;background:rgba(255,255,255,.82);border-radius:24px;padding:22px 10px}.benefits>div{text-align:center;padding:10px 20px;border-right:1px solid #e2e8eb}.benefits>div:last-child{border-right:0}.benefits span{display:block;color:#b8782e;font-weight:900;font-size:28px;margin-bottom:9px}.benefits b{display:block;font-family:Georgia,serif;font-size:17px}.benefits small{display:block;color:#4b6583;margin-top:7px;line-height:1.4}.why{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:15px;background:linear-gradient(120deg,#dff3ff,#edf9ff 55%,#f8fcff);border-radius:28px;padding:30px}.why h2{font-family:Georgia,serif;font-size:34px;margin:0 0 12px}.why p{line-height:1.55;color:#164b86}.why-card{background:rgba(255,255,255,.88);border-radius:18px;padding:25px 18px;display:flex;flex-direction:column;justify-content:center}.why-card b{font-family:Georgia,serif;font-size:18px}.why-card small{margin-top:8px;line-height:1.45;color:#4b6583}.app{max-width:980px;padding:20px}.card{background:linear-gradient(145deg,#fffefb,#f4fbff);border:1px solid #d9eaf4;box-shadow:0 12px 32px #0a4a7b10}.brand{color:#073f8c;font-family:Georgia,serif}.primary,.soc-lock{background:#073f8c}.ghost,.soc-back{background:#e7f5ff;color:#073f8c}.pill,.soc-badge,.info,.soc-feedback{background:#e8f6ff;color:#073f8c}.progress,.soc-meter{background:#dbeef8}.bar,.soc-meter>div,.soc-tab.active{background:#0a579f}.soc-task{background:linear-gradient(145deg,#fff,#eef9ff);border-color:#d7eaf5}.soc-task h3,.soc-q{color:#073f8c}.reviewer-head{position:relative;padding-top:62px}.home-return{position:absolute;left:24px;top:18px;background:#e6f5ff;color:#073f8c;border:1px solid #cce6f4}.home-return:hover{background:#d9effc}.math,.metric,.locked,.problem-preview{background:#f1f9ff;border-color:#d8e9f3}.reviewer-card{background:#eef8ff;border-color:#cde4f1}.reviewer-item{background:#fffefb;border-color:#dbe9f1}
+@media(max-width:800px){.premium-nav{position:static}.nav-links{display:none}.mode-hero{grid-template-columns:1fr;padding:36px 24px;min-height:auto}.mode-hero h1{font-size:44px}.hero-art{min-height:300px}.benefits{grid-template-columns:1fr 1fr}.benefits>div{border-right:0;border-bottom:1px solid #e2e8eb}.why{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr}.premium-mode small{max-width:100%}}
+
+.project-about{margin:24px 0 0;background:#073f8c;color:#fff;border-radius:28px;padding:34px;display:grid;grid-template-columns:1fr 1.15fr;gap:28px;align-items:center}.project-kicker{font-size:12px;font-weight:900;letter-spacing:1.6px;color:#f0c48c}.project-about h2{font-family:Georgia,serif;font-size:30px;line-height:1.15;margin:8px 0 12px}.project-about p{line-height:1.6;color:#dcecff;margin:0}.project-flow{display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap}.project-flow span{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.2);padding:10px 12px;border-radius:14px;font-size:13px;font-weight:800}.project-flow b{color:#f0c48c}.science-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}.science-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:16px}.science-item b{display:block;color:#f0c48c;font-size:13px;margin-bottom:6px}.science-item small{display:block;color:#eaf3ff;line-height:1.45;font-size:12px}.site-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:25px 4px 6px;color:#31577f}.site-footer b{font-family:Georgia,serif;color:#073f8c}.site-footer span{font-weight:800;color:#a96b2b}.site-footer small{color:#6b7e94}@media(max-width:800px){.project-about{grid-template-columns:1fr;padding:25px}.science-grid{grid-template-columns:1fr 1fr}.project-about h2{font-size:25px}.site-footer{flex-direction:column;align-items:flex-start}}
+</style>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"],["$","$"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:'global'}};</script><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script></head><body><div id="modeHome" class="mode-shell premium-home">
+  <div class="premium-nav"><div class="premium-logo"><span class="m-mark">M</span> MathOlymTRAINER</div><div class="nav-links"><a href="#homeHero">Басты бет</a><a href="#modes">ЖИ тексеру</a><a href="#projectAbout">Ғылыми жоба</a></div></div>
+  <div class="mode-hero" id="homeHero"><div class="hero-copy"><div class="eyebrow"></div><h1>Олимпиадалық<br>ойлауды<br>жаттықтыр</h1><div class="hero-tag">Ойлан. Тексер. Дәлелде.</div><p>Олимпиадалық математикаға арналған ЖИ негізіндегі интеллектуалдық тренажёр. Сократтық диалог пен логикалық тексеру арқылы сенің ойлау қабілетіңді дамытады.</p><div class="hero-actions"><button class="gold-btn" id="heroStart">Бастау →</button><button class="voice-btn" id="platformVoice" type="button"><span id="voiceIcon">▶</span><span><b>Платформа туралы</b><small>1 минут</small></span></button></div></div><div class="hero-art" aria-hidden="true"><div class="math-symbol s1">√a²+b²</div><div class="math-symbol s2">∑</div><div class="math-symbol s3">π</div><div class="book-stack"><div>MATHEMATICS</div><div>OLYMPIAD</div><div>LOGIC</div><div>PROBLEM SOLVING</div></div><div class="gold-m">M</div></div></div>
+  <div class="mode-grid" id="modes">
+    <button class="mode-card premium-mode" id="openSocratic"><span>💬</span><b>Сократтық диалог</b><small><strong>16 олимпиадалық есеп • 4 бағыт</strong><br>Дайын жауап берілмейді, үйренесің, сұрақтар арқылы өзіңше ойланып шығаруға көмектеседі.</small><i>Диалогпен шешу →</i></button>
+    <button class="mode-card premium-mode" id="openReviewer"><span>🔎</span><b>ЖИ шешімін тексер</b><small>Олимпиадалық есепті енгіз. ЖИ ұсынған шешімді қадам бойынша тексеріп, логикалық қатені L0–L8 бойынша жікте және тәуелсіз Reviewer қорытындысымен салыстыр.</small><i>Тексеріп көру →</i></button>
+  </div>
+  <div class="benefits"><div><span>🧠</span><b>Логикалық ойлауды дамыту</b><small>Тек жауап емес, ойлау мәдениеті</small></div><div><span>▥</span><b>Олимпиадалық деңгейдегі есептер</b><small>4 бағыт бойынша іріктелген 16 есеп</small></div><div><span>AI</span><b>ЖИ негізіндегі талдау</b><small>L0–L8 бойынша логикалық қатені жіктеу</small></div><div><span>🏆</span><b>Нәтижеңді талда</b><small>Қате, көмек және орындау уақыты бойынша кері байланыс</small></div></div>
+  <div class="why" id="why"><div><h2>Неліктен<br>MathOlymTRAINER?</h2><p>Бұл платформа дайын жауапты жай қабылдамай, математикалық пайымдауды тексеруге және дәлелдеуге үйретеді. Сократтық диалог пен ЖИ талдауы олимпиадалық есептермен жұмыс істеуде сыни ойлауды дамытуға бағытталған.</p></div><div class="why-card"><b>◎ Терең түсіну</b><small>Жай жауап емес — логика мен дәлелге сүйену.</small></div><div class="why-card"><b>💡 Өз бетіңше ойлау</b><small>Сұрақтар арқылы шешім бағытын өзің табасың.</small></div><div class="why-card"><b>▥ Сыни тексеру</b><small>ЖИ жауабын қадам бойынша бағалап, қорытынды жасайсың.</small></div></div>
+  <section id="projectAbout" class="project-about"><div><div class="project-kicker">ҒЫЛЫМИ ЖОБА</div><h2>ЖИ жауабын бірден қабылдама — тексер, дәлелде, қорытынды жаса</h2><p>MathOlymTRAINER — олимпиадалық есептерді шешуде жасанды интеллекттің логикалық шектеулерін зерттеуге және оқушының сыни математикалық ойлауын жаттықтыруға арналған интеллект-тренажёр.</p></div><div class="project-flow"><span>1. Есеп</span><b>→</b><span>2. ЖИ шешімі</span><b>→</b><span>3. Қадамдық тексеру</span><b>→</b><span>4. L0–L8 жіктеу</span><b>→</b><span>5. Тәуелсіз Reviewer</span></div><div class="science-grid"><div class="science-item"><b>Зерттеу мақсаты</b><small>Олимпиадалық есептерді шешуде ЖИ жіберетін логикалық қателерді анықтап, оларды оқушының сыни ойлауын дамытуға пайдалану.</small></div><div class="science-item"><b>Зерттеу нысаны</b><small>ЖИ ұсынған олимпиадалық есептердің шешімдері және оларды оқушының қадамдық тексеру үдерісі.</small></div><div class="science-item"><b>Жобаның жаңалығы</b><small>ЖИ жауабын дайын шешім ретінде емес, тексерілетін зерттеу нысаны ретінде қолданып, қатені L0–L8 бойынша жіктеу.</small></div><div class="science-item"><b>Практикалық маңызы</b><small>Тренажёр оқушыны дәлелдеуге, күмәндануға, қатені табуға және өз математикалық қорытындысын негіздеуге жаттықтырады.</small></div></div></section>
+  <footer class="site-footer"><b>MathOlymTRAINER</b><span>Ойлан. Тексер. Дәлелде.</span><small>Оқу-зерттеу мақсатындағы интеллектуалдық тренажёр</small></footer>
+</div>
+<div id="socraticApp" class="app hidden"></div>
+<main class="app hidden" id="app">
+<div class="card reviewer-head"><button class="home-return" type="button" onclick="mode('home')">← Басты бетке</button><div class="top"><div><div class="brand">MathOlymTRAINER</div><div class="mut">«Өз есебіңді енгіз» • ЖИ шешімін тексер • 1–8 кезең</div></div><span class="pill" id="counter">1 / 8</span></div><div class="small" style="margin:6px 0 10px;color:#667085">💾 Сеанс автоматты сақталады</div><div class="progress"><div class="bar" id="bar" style="width:12.5%"></div></div></div>
+<section class="card step active" data-step="1"><div class="brand">1-КЕЗЕҢ • ЕСЕПТІ ЕНГІЗУ</div><h2>Олимпиадалық есепті енгіз</h2><p class="mut">Есепті енгізгеннен кейін ЖИ дәл осы есепке жаңа қадамдық шешім құрады. Сен әр қадамды тексеріп, логикалық қатені анықтайсың; соңында тәуелсіз Reviewer сараптайды.</p><label>Бөлім</label><select id="topic"><option>Алгебра</option><option selected>Геометрия</option><option>Сандар теориясы</option><option>Комбинаторика</option></select><label>Есеп шарты</label><textarea id="problem" placeholder="Есеп шартын толық енгізіңіз..."></textarea><div class="status">Формулаларды математикалық белгілермен енгізуге болады. Мысалы: n²+1, ∠ABC, AB·CD.</div><div id="problemPreview" class="problem-preview"></div><div class="actions"><span></span><button class="primary" id="solveBtn">ЖИ-ге шештір →</button></div></section>
+<section class="card step" data-step="2"><div class="brand">2-КЕЗЕҢ • ЖИ ШЕШІМІ</div><h2>Жауапқа емес, пайымдауға назар аудар</h2><div class="callout info">Әр қадам алдыңғы қадамнан шыға ма? Қолданылған қасиет дұрыс па? Есеп шарты толық пайдаланылды ма?</div><div class="math" id="problemView"></div><div id="aiSolutionView"></div><div class="math" id="aiConclusionView"></div><div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="toRatings">Қадамдарды тексер →</button></div></section>
+<section class="card step" data-step="3"><div class="brand">3-КЕЗЕҢ • ҚАДАМДАРДЫ САРАПТАУ</div><h2>Әр қадамға баға бер</h2><p class="mut">Үш батырма бастапқыда бейтарап. ✓ — қадам негізделген деп есептеймін; ? — сенімді емеспін, тексергім келеді; ✕ — нақты математикалық қате бар деп есептеймін.</p><div id="ratings"></div><div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="ratingsNext">Негіздеуге өт →</button></div></section>
+<section class="card step" data-step="4"><div class="brand">4-КЕЗЕҢ • ЖЕКЕ НЕГІЗДЕУ</div><div id="analysisEmpty" class="callout info hidden">Сен барлық қадамды «Негізделген» деп белгіледің. Бұл кезеңде қосымша негіздеу қажет емес.</div><div id="analysisWork"><div class="top"><h2 id="analysisTitle" style="margin:0">Қадамды талда</h2><span class="pill" id="analysisCount"></span></div><div class="solution-step" id="analysisStep"></div><div class="callout info" id="analysisPrompt"></div><label for="analysisReason">Алғашқы дербес негіздемең</label><textarea id="analysisReason" placeholder="Өз ойыңды математикалық тілмен жаз..."></textarea><div class="status" id="lockStatus">Жауап әлі тіркелген жоқ.</div><div class="actions"><button class="help" id="helpBtn">Көмек керек</button><button class="primary" id="lockReason">Жауабымды тіркеу</button></div><div id="hintBox" class="callout warn hidden"></div><div id="semanticFlow" class="hidden"></div>
+<div id="semanticDone" class="callout good hidden"><b>Ойың математикалық тұрғыдан нақтыланды.</b><br>Енді осы қадамның дұрыс нұсқасын өзің ұсын.</div>
+<div id="afterLock" class="hidden"><div id="badRepair" class="hidden"><label for="repairText">Бұл қадамды қалай түзетер едің?</label><textarea id="repairText" placeholder="Дұрыс математикалық қадамды ұсын..."></textarea></div><div id="qRecheck" class="hidden"><div class="subhead">Енді осы қадам туралы шешімің қандай?</div><div class="rating" id="recheckButtons"><button type="button" class="rate" data-r="ok">✓ Негізделген</button><button type="button" class="rate" data-r="q">? Әлі де күмәнді</button><button type="button" class="rate" data-r="bad">✕ Қате</button></div></div><div class="actions"><span></span><button class="primary" id="nextFlagged">Келесі →</button></div></div></div><div class="actions"><button class="ghost" id="analysisBack">← Қадамдарды бағалауға қайту</button><button class="primary hidden" id="analysisDone">Жалпы қорытынды →</button></div></section>
+<section class="card step" data-step="5"><div class="brand">5-КЕЗЕҢ • ЖАЛПЫ ҚОРЫТЫНДЫ</div><h2>ЖИ шешімі туралы шешімің қандай?</h2><div class="options" id="verdicts"><button class="opt" data-v="error">Логикалық қате анықтадым</button><button class="opt" data-v="valid">Шешім негізделген деп есептеймін</button><button class="opt" data-v="uncertain">Дәлел жеткіліксіз — сенімді қорытынды жасай алмаймын</button></div><div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="verdictNext">Жалғастыру →</button></div></section>
+<section class="card step" data-step="6"><div class="brand">6-КЕЗЕҢ • ЛОГИКАЛЫҚ НӘТИЖЕНІ ЖІКТЕУ</div><h2>Сараптама санатын таңда</h2><p class="mut">Егер ЖИ шешімі толық негізделген болса — L0 таңда. Егер логикалық қате анықталса — L1–L8 санаттарының сәйкесін таңда.</p><div class="options" id="classes"><button class="opt" data-c="L0"><b>L0</b> — логикалық қате анықталмады</button><button class="opt" data-c="L1"><b>L1</b> — есеп шартын түсіну қатесі</button><button class="opt" data-c="L2"><b>L2</b> — негізсіз болжам</button><button class="opt" data-c="L3"><b>L3</b> — логикалық секіріс</button><button class="opt" data-c="L4"><b>L4</b> — ережені немесе қасиетті қате қолдану</button><button class="opt" data-c="L5"><b>L5</b> — жалған заңдылық / негізсіз жалпылау</button><button class="opt" data-c="L6"><b>L6</b> — қайшылықты байқамау</button><button class="opt" data-c="L7"><b>L7</b> — дұрыс жауапқа қате пайымдаумен келу</button><button class="opt" data-c="L8"><b>L8</b> — қате қорытындыны сенімді негіздеу</button></div><label for="classReason">Неге осы санатты таңдадың?</label><textarea id="classReason" placeholder="Қысқаша математикалық негіздеме..."></textarea><div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="classNext">Тәуелсіз тексеру →</button></div></section>
+<section class="card step" data-step="7">
+<div class="brand">7-КЕЗЕҢ • ТӘУЕЛСІЗ ТЕКСЕРУ</div>
+<h2>Semantic Mathematical Reviewer</h2>
+<div class="callout info">
+  Бұл кезеңде оқушының еркін жауабы нақты бір сөйлеммен немесе кілтсөзбен салыстырылмайды.
+  Сервердегі бөлек Reviewer есеп шартын, ЖИ қадамдарын және оқушының негіздемелерін бірге бағалайды.
+</div>
+<div id="reviewerStatus" class="reviewer-card">
+  <div class="reviewer-loading">Reviewer жауабы күтілуде…</div>
+</div>
+<div id="reviewerReport" class="hidden"></div>
+<div class="callout warn hidden" id="reviewerOffline">
+  <b>Тәуелсіз тексеру уақытша орындалмады.</b><br>
+  1–6 кезеңдегі деректер сақталады; L0–L8 жіктеуі жоғалмайды.
+</div>
+<div class="callout info" id="comparison"></div>
+<div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="toReflection">Рефлексия →</button></div>
+</section>
+<section class="card step" data-step="8"><div class="brand">8-КЕЗЕҢ • РЕФЛЕКСИЯ</div><h2>Сарапшы ретінде өз әрекетіңді бағала</h2><label>ЖИ-дің алғашқы жауабына бірден сендің бе?</label><select id="trust"><option>Жоқ, бірден тексердім</option><option>Алғашында сендім, кейін күмәндандым</option><option>Иә, сендім</option></select><label>Қай қадамды тексеру қиын болды?</label><textarea id="hard"></textarea><label>Қазір ЖИ шешіміне көзқарасың өзгерді ме?</label><select id="changed"><option>Иә, әр қадамды тексеру керегін түсіндім</option><option>Аздап өзгерді</option><option>Жоқ</option></select><div class="actions"><button class="ghost back">← Артқа</button><button class="primary" id="finish">Нәтижені көру →</button></div></section>
+<section class="card" id="result" style="display:none"><div class="brand">ТРЕНАЖЁР НӘТИЖЕСІ</div><h2>Сараптау циклі аяқталды</h2><div class="grid2"><div class="metric"><span class="mut">Бағаланған қадамдар</span><br><b id="mRated">0/0</b></div><div class="metric"><span class="mut">Күмәнді/қате</span><br><b id="mFlags">0</b></div><div class="metric"><span class="mut">Көмек қолдану</span><br><b id="mHints">0</b></div><div class="metric"><span class="mut">Негізделген жауаптар</span><br><b id="mReasons">0</b></div></div><div id="auditResult" class="callout info"></div><button class="primary" id="restart">Қайта сынау</button></section>
+</main>
+<script>
+(()=>{
+const root=document.getElementById('app'); let step=1, verdict='', cls='', flagged=[], flagPos=0;
+const ratings={}, analyses={};
+let texts=[]; let aiConclusion=''; let reviewerResult=null; let reviewerState='not-run';
+const labels={ok:'✓ Негізделген',q:'? Күмәнді',bad:'✕ Қате'};
+function show(n){ p7CurrentScreen=n;step=n;if(n===7){setTimeout(runSemanticReviewer,80);} document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===n));document.getElementById('result').style.display='none';document.getElementById('counter').textContent=n+' / 8';document.getElementById('bar').style.width=(n/8*100)+'%';window.scrollTo({top:0,behavior:'smooth'});}
+const ratingsBox=document.getElementById('ratings');
+function renderDynamicSolution(){
+  const v=document.getElementById('aiSolutionView'); v.innerHTML='';
+  texts.forEach((t,i)=>{const d=document.createElement('div');d.className='solution-step';const b=document.createElement('b');b.textContent=(i+1)+'-қадам';d.appendChild(b);d.appendChild(document.createTextNode(t));v.appendChild(d)});
+  const c=document.getElementById('aiConclusionView'); c.textContent=''; const cb=document.createElement('b');cb.textContent='ЖИ қорытындысы: ';c.append(cb,document.createTextNode(aiConclusion||'—'));
+  ratingsBox.innerHTML=''; Object.keys(ratings).forEach(k=>delete ratings[k]); Object.keys(analyses).forEach(k=>delete analyses[k]);
+  texts.forEach((t,i)=>{const d=document.createElement('div');d.className='solution-step';const b0=document.createElement('b');b0.textContent=(i+1)+'-қадам';const tx=document.createElement('div');tx.textContent=t;const r=document.createElement('div');r.className='rating';d.append(b0,tx,r);[['ok','✓ Негізделген'],['q','? Күмәнді'],['bad','✕ Қате']].forEach(([v,l])=>{const b=document.createElement('button');b.type='button';b.className='rate';b.textContent=l;b.addEventListener('click',()=>{ratings[i]=v;[...r.children].forEach(x=>x.className='rate');b.classList.add(v==='ok'?'sel-ok':v==='q'?'sel-q':'sel-bad');});r.appendChild(b)});ratingsBox.appendChild(d)});
+  if(window.MathJax?.typesetPromise) MathJax.typesetPromise();
+}
+const problemInput=document.getElementById('problem');
+const problemPreview=document.getElementById('problemPreview');
+let previewTimer=null;
+function renderProblemPreview(){
+  const value=problemInput.value.trim();
+  problemPreview.textContent=value;
+  if(window.MathJax?.typesetClear) MathJax.typesetClear([problemPreview]);
+  if(window.MathJax?.typesetPromise) MathJax.typesetPromise([problemPreview]).catch(()=>{});
+}
+problemInput.addEventListener('input',()=>{clearTimeout(previewTimer);previewTimer=setTimeout(renderProblemPreview,180)});
+async function readJsonResponse(res){
+  const raw=await res.text();
+  try{return JSON.parse(raw)}catch(_){
+    const looksHtml=/^\s*</.test(raw)||/<!doctype|<html/i.test(raw);
+    if(looksHtml){
+      if(res.status===404) throw new Error('Сервердегі math-solver функциясы табылмады. Netlify-ге ZIP ішіндегі бүкіл папканы қайта жүктеу керек.');
+      throw new Error('Сервер JSON орнына HTML жауап қайтарды. Бұл көбіне Netlify функциясының уақыт шегінен асқанын немесе уақытша сервер қатесін білдіреді.');
+    }
+    throw new Error('Сервер жауабы JSON форматында емес (HTTP '+res.status+').');
+  }
+}
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function pollSolver(responseId,btn){
+  const started=Date.now();
+  for(let attempt=0;attempt<90;attempt++){
+    const sec=Math.max(1,Math.round((Date.now()-started)/1000));
+    btn.textContent=`Күрделі есеп: ЖИ шешіп жатыр… ${sec} с`;
+    const res=await fetch('/api/math-solver-status',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({response_id:responseId})});
+    const d=await readJsonResponse(res);
+    if(!res.ok) throw new Error(String(d?.error||('HTTP '+res.status)));
+    if(d?.status==='completed') return d;
+    if(!['queued','in_progress'].includes(String(d?.status||''))) throw new Error('ЖИ тапсырмасының күйі түсініксіз: '+String(d?.status||'—'));
+    await wait(2500);
+  }
+  throw new Error('Күрделі есепті шешу 4 минуттан асты. Кейін қайта сынап көріңіз.');
+}
+document.getElementById('solveBtn').addEventListener('click',async()=>{
+  const p=problemInput.value.trim();
+  if(!p){alert('Есеп шартын енгізіңіз.');return}
+  const btn=document.getElementById('solveBtn'),old=btn.textContent;
+  btn.disabled=true;btn.textContent='ЖИ тапсырманы қабылдап жатыр…';
+  try{
+    const startRes=await fetch('/api/math-solver',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({topic:document.getElementById('topic').value,problem:p})});
+    const startData=await readJsonResponse(startRes);
+    if(!startRes.ok) throw new Error(String(startData?.error||('HTTP '+startRes.status)));
+    if(!startData?.response_id) throw new Error('ЖИ тапсырмасының ID алынбады.');
+    const d=await pollSolver(String(startData.response_id),btn);
+    if(!Array.isArray(d.steps)||d.steps.length<5) throw new Error('ЖИ шешімі толық келмеді.');
+    texts=d.steps.map(String);aiConclusion=String(d.conclusion||'');
+    document.getElementById('problemView').textContent=p;
+    renderDynamicSolution();show(2);
+  }catch(e){alert('ЖИ-ге шештіру іске қосылмады: '+e.message)}
+  finally{btn.disabled=false;btn.textContent=old}
+});
+document.getElementById('toRatings').addEventListener('click',()=>show(3));
+document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>show(Math.max(1,step-1))));
+document.getElementById('ratingsNext').addEventListener('click',()=>{if(Object.keys(ratings).length<texts.length){alert('Алдымен барлық қадамға баға беріңіз.');return}flagged=Object.keys(ratings).map(Number).filter(i=>ratings[i]==='q'||ratings[i]==='bad');flagPos=0;if(!flagged.length){document.getElementById('analysisWork').classList.add('hidden');document.getElementById('analysisEmpty').classList.remove('hidden');document.getElementById('analysisDone').classList.remove('hidden');}else{document.getElementById('analysisWork').classList.remove('hidden');document.getElementById('analysisEmpty').classList.add('hidden');document.getElementById('analysisDone').classList.add('hidden');renderFlag();}show(4)});
+
+function norm(s){return (s||'').toLowerCase().replace(/[°º]/g,' градус ').replace(/[∠⌢]/g,' ').replace(/\s+/g,' ').trim();}
+function hasAny(s,arr){return arr.some(x=>s.includes(x));}
+
+function explainClassificationChoice(code){
+  const common='Негізгі ақау 3-қадамда басталады: ЖИ ∠ABC пен ∠AED бұрыштарына бірдей 260° доғаны қолданады. Бұл — іштей сызылған бұрыш қасиетін қате қолдану, сондықтан түбірлік қате L4.';
+  const why={
+    L1:'L1 шартты қате түсінуге қатысты. Мұнда ∠CAD=50° және CD доғасы 100° деген шарт дұрыс алынған; қате шартты оқудан емес.',
+    L2:'L2 негізделмеген жорамалға қатысты. Мұнда негізгі мәселе жай жорамал емес, нақты геометриялық қасиетті дұрыс емес доғаға қолдану.',
+    L3:'L3 дәлелдегі логикалық секіріске қатысты. Мұнда қате қадамның табиғаты нақтырақ: іштей сызылған бұрыш қасиеті қате қолданылған.',
+    L4:'Сен таңдаған L4 эталон жіктеумен сәйкес келеді.',
+    L5:'L5 жалған үлгі не жалпылауға қатысты. Бұл есепте негізгі ақау үлгі құру емес, геометриялық ережені қате қолдану.',
+    L6:'L6 қайшылықты байқамауға қатысты. Қайшылық салдар ретінде көрінуі мүмкін, бірақ түбірлік ақау одан бұрын — қасиетті қате қолдануда.',
+    L7:'L7 соңғы жауап дұрыс болып, пайымдау қате болған жағдайға арналған. Мұнда соңғы 130° жауабының өзі де қате.',
+    L8:'L8 қате қорытындыны сенімді негіздеуді сипаттай алады, бірақ ол бұл жерде салдарлық сипат. 130° қорытындысына әкелген түбірлік ақау — екі бұрышқа бірдей доғаны қолдану, яғни L4.'
+  };
+  return (why[code]||'')+' '+common;
+}
+
+function evaluateCurrent(i){
+  const a=analyses[i]||{};
+  const all=norm([a.reason,...(a.clarifications||[])].filter(Boolean).join(' '));
+  const level=all.length>=20?'recorded':'brief';
+  a.semanticLevel=level;
+  a.nextQuestion='';
+  a.evaluator='independent-reviewer';
+  return {level,q:''};
+}
+
+function renderFlag(){
+ const i=flagged[flagPos],kind=ratings[i],a=analyses[i]||{kind,reason:'',locked:false,help:false,repair:'',recheck:'',clarifications:[],semanticLevel:'',nextQuestion:''};
+ analyses[i]=a;
+ document.getElementById('analysisCount').textContent=(flagPos+1)+' / '+flagged.length;
+ document.getElementById('analysisTitle').textContent=(i+1)+'-қадамды талдау';
+ document.getElementById('analysisStep').innerHTML='<b>'+(i+1)+'-қадам • '+labels[kind]+'</b><div>'+texts[i]+'</div>';
+ document.getElementById('analysisPrompt').innerHTML=kind==='q'?'<b>Сен бұл қадамға күмәндандың.</b><br>Бұл қадамның қай тұсы саған күмәнді болып көрінді? Өз ойыңды математикалық тұрғыдан түсіндір.':'<b>Сен бұл қадамды «Қате» деп белгіледің.</b><br>Бұл қадамда нақты қандай математикалық қате бар? Негізде.';
+ const ta=document.getElementById('analysisReason'); ta.value=a.reason; ta.disabled=a.locked;
+ document.getElementById('lockStatus').textContent=a.locked?'Алғашқы жауап тіркелді және өзгертілмейді.':'Жауап әлі тіркелген жоқ.';
+ document.getElementById('lockReason').classList.toggle('hidden',a.locked);
+ document.getElementById('helpBtn').disabled=false; document.getElementById('helpBtn').style.opacity='1';
+ const hint=document.getElementById('hintBox'); hint.classList.toggle('hidden',!a.help);
+ hint.textContent=a.help?(kind==='q'?'Бағыттаушы сұрақ: осы тұжырым қандай қасиетке сүйенуі тиіс? Есеп шарты мен қадам арасындағы байланысты тексер.':'Бағыттаушы сұрақ: қолданылған математикалық қасиетті нақты ата да, оның бұл жағдайда орындалу шарттарын тексер.') :'';
+ document.getElementById('badRepair').classList.toggle('hidden',kind!=='bad');
+ document.getElementById('qRecheck').classList.toggle('hidden',kind!=='q');
+ document.getElementById('repairText').value=a.repair||'';
+ document.querySelectorAll('#recheckButtons .rate').forEach(b=>{b.className='rate';if(a.recheck===b.dataset.r)b.classList.add(a.recheck==='ok'?'sel-ok':a.recheck==='q'?'sel-q':'sel-bad')});
+ document.getElementById('nextFlagged').textContent=flagPos===flagged.length-1?'Негіздеуді аяқтау →':'Келесі белгіленген қадам →';
+ const sf=document.getElementById('semanticFlow'),sd=document.getElementById('semanticDone'); sf.classList.add('hidden'); sd.classList.add('hidden');
+ if(a.locked){
+   const ev=evaluateCurrent(i); // ғылыми дерек ретінде ішкі деңгей ғана сақталады; оқушыны бөгемейді
+   a.semanticLevel=ev.level;
+   sd.classList.remove('hidden');
+   sd.innerHTML='<b>Алғашқы дербес негіздемең тіркелді.</b><br>Ол өзгеріссіз сақталды. Мағынасы 7-кезеңдегі тәуелсіз Reviewer арқылы бағаланады. Қазір өзің дұрыс деп есептейтін нұсқаны ұсын.';
+ }
+ document.getElementById('afterLock').classList.toggle('hidden',!a.locked);
+}
+document.getElementById('helpBtn').addEventListener('click',()=>{const i=flagged[flagPos];analyses[i].help=true;renderFlag()});
+document.getElementById('lockReason').addEventListener('click',()=>{const i=flagged[flagPos],v=document.getElementById('analysisReason').value.trim();if(v.length<8){alert('Алғашқы ойыңызды қысқаша математикалық негіздеңіз.');return}analyses[i].reason=v;analyses[i].locked=true;renderFlag()});
+
+document.querySelectorAll('#recheckButtons .rate').forEach(b=>b.addEventListener('click',()=>{const i=flagged[flagPos];analyses[i].recheck=b.dataset.r;renderFlag()}));
+document.getElementById('nextFlagged').addEventListener('click',()=>{const i=flagged[flagPos],a=analyses[i];if(!a.locked){alert('Алдымен алғашқы жауабыңызды тіркеңіз.');return}evaluateCurrent(i);if(a.kind==='bad'){const r=document.getElementById('repairText').value.trim();if(r.length<10){alert('Түзетуді математикалық тұрғыдан қысқаша жазыңыз. Бұл өріс міндетті.');document.getElementById('repairText').focus();return}a.repair=r}else if(!a.recheck){alert('Осы қадам туралы соңғы шешіміңізді таңдаңыз.');return}if(flagPos<flagged.length-1){flagPos++;renderFlag();window.scrollTo({top:0,behavior:'smooth'})}else{document.getElementById('analysisWork').classList.add('hidden');document.getElementById('analysisEmpty').classList.remove('hidden');document.getElementById('analysisEmpty').textContent='Барлық белгіленген қадам жеке-жеке негізделді. Алғашқы дербес жауаптар мен көмек қолдану фактілері тіркелді.';document.getElementById('analysisDone').classList.remove('hidden');}});
+document.getElementById('analysisBack').addEventListener('click',()=>show(3));document.getElementById('analysisDone').addEventListener('click',()=>show(5));
+document.querySelectorAll('#verdicts .opt').forEach(b=>b.addEventListener('click',()=>{verdict=b.dataset.v;document.querySelectorAll('#verdicts .opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')}));
+document.getElementById('verdictNext').addEventListener('click',()=>{if(!verdict){alert('ЖИ шешімі туралы қорытынды таңдаңыз.');return}cls='';document.querySelectorAll('#classes .opt').forEach(x=>x.classList.remove('sel'));if(verdict==='valid'){cls='L0';const l0=document.querySelector('#classes .opt[data-c="L0"]');if(l0)l0.classList.add('sel')}show(6)});
+document.querySelectorAll('#classes .opt').forEach(b=>b.addEventListener('click',()=>{cls=b.dataset.c;document.querySelectorAll('#classes .opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')}));
+document.getElementById('classNext').addEventListener('click',()=>{if(!cls){alert('Сараптама санатын таңдаңыз.');return}if(verdict==='error'&&cls==='L0'){alert('Сіз логикалық қате анықтадым деп таңдадыңыз. L1–L8 санаттарының бірін таңдаңыз.');return}if(verdict==='valid'&&cls!=='L0'){alert('Шешім негізделген деп есептесеңіз, L0 санатын таңдаңыз.');return}if(document.getElementById('classReason').value.trim().length<5){alert('Таңдауыңызды қысқаша негіздеңіз.');return}updateComparison();show(7)});
+function updateComparison(){
+  const initial=Object.keys(ratings).map(Number).filter(i=>ratings[i]==='q'||ratings[i]==='bad');
+  let s=initial.length?`Бастапқы сараптамада күмәнді/қате деп белгіленген қадамдар: ${initial.map(i=>i+1).join(', ')}. `:'Бастапқы сараптамада күмәнді/қате қадам белгіленбеді. ';
+  const helped=Object.keys(analyses).map(Number).filter(i=>analyses[i]?.help);
+  if(helped.length) s+=`Көмек қолданылған қадамдар: ${helped.map(i=>i+1).join(', ')}. `;
+  s+='Тәуелсіз Reviewer осы деректерді есеп шартымен және ЖИ шешімімен бірге тексереді.';
+  document.getElementById('comparison').textContent=s;
+}
+
+
+async function runSemanticReviewer(){
+  const status=document.getElementById('reviewerStatus');
+  const report=document.getElementById('reviewerReport');
+  const offline=document.getElementById('reviewerOffline');
+  if(!status||!report) return;
+  reviewerState='loading'; reviewerResult=null;
+  status.classList.remove('hidden'); report.classList.add('hidden'); offline.classList.add('hidden');
+  status.innerHTML='<div class="reviewer-loading">Reviewer математикалық мағынаны тексеріп жатыр…</div>';
+
+  const payload={
+    topic:document.getElementById('topic')?.value||'',
+    problem:document.getElementById('problem')?.value||'',
+    ai_solution:texts.map((t,i)=>({step:i+1,text:t})),
+    ai_conclusion:aiConclusion||'',
+    student_ratings:texts.map((_,i)=>({step:i+1,rating:ratings[i]||''})),
+    student_analyses:Object.keys(analyses).map(k=>({
+      step:Number(k)+1, initial_rating:ratings[k]||'', initial_reason:analyses[k]?.reason||'',
+      help_used:!!analyses[k]?.help, correction:analyses[k]?.repair||'', reconsidered_rating:analyses[k]?.recheck||''
+    })),
+    overall_verdict:verdict||'', student_classification:cls||'',
+    classification_reason:document.getElementById('classReason')?.value||''
+  };
+  try{
+    const res=await fetch('/api/math-reviewer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    let d={}; try{d=await res.json()}catch(e){}
+    if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
+    reviewerState='success'; reviewerResult=d;
+    status.classList.add('hidden'); report.classList.remove('hidden');
+    const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    const steps=(d.step_reviews||[]).map(x=>`<div class="reviewer-item"><b>${esc(x.step)}-қадам • ${esc(x.status)}</b>${esc(x.feedback)}</div>`).join('');
+    report.innerHTML=`<div class="reviewer-card"><div class="reviewer-ok">✓ Тәуелсіз мағыналық тексеру аяқталды</div><p><b>Негізгі математикалық мәселе:</b> ${esc(d.root_issue)}</p><div class="reviewer-grid">${steps}</div></div>
+      <div class="callout good"><b>Оқушының негіздемесін бағалау:</b><br>${esc(d.student_reasoning_feedback)}</div>
+      <div class="callout info"><b>Дұрыс математикалық бағыт:</b><br>${esc(d.correct_reasoning)}</div>
+      <div class="callout ${d.classification_match?'good':'warn'}"><b>L0–L8 сараптамасы:</b> Reviewer — ${esc(d.reviewer_classification)}. ${d.classification_match?'Оқушының жіктеуімен сәйкес.':'Оқушының жіктеуімен сәйкес емес.'}<br>${esc(d.classification_explanation)}</div>
+      <div class="callout info"><b>Бағалау деңгейі:</b> ${esc(d.student_reasoning_level)}<br><b>Сенімділік:</b> ${esc(d.confidence)}</div>`;
+    if(window.MathJax?.typesetPromise){try{window.MathJax.typesetClear([report]);}catch(e){} window.MathJax.typesetPromise([report]).catch(()=>{});}
+    try{localStorage.setItem('MathOlymTRAINER_P8_LAST_REVIEW',JSON.stringify(d));}catch(e){}
+  }catch(err){
+    reviewerState='failed'; reviewerResult=null;
+    status.classList.add('hidden'); offline.classList.remove('hidden');
+    offline.innerHTML='<b>Тәуелсіз тексеру уақытша орындалмады.</b><br>1–6 кезеңдегі деректер жоғалған жоқ. Бұл нәтиже L0–L8 санатын автоматты түрде өзгертпейді. Қажет болса, кейін қайта тексеруге болады.<br><small>'+String(err.message||err)+'</small>';
+  }
+}
+
+
+document.getElementById('toReflection').addEventListener('click',()=>show(8));
+document.getElementById('finish').addEventListener('click',()=>{
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('counter').textContent='8 / 8';
+  document.getElementById('bar').style.width='100%';
+  document.getElementById('result').style.display='block';
+
+  const rated=Object.keys(ratings).length;
+  const flags=Object.values(ratings).filter(v=>v==='q'||v==='bad').length;
+  const hints=Object.values(analyses).filter(a=>a.help).length;
+  const stepReasons=Object.values(analyses).filter(a=>a.locked).length;
+  const classReason=(document.getElementById('classReason')?.value||'').trim();
+  const reasons=stepReasons+(classReason?1:0);
+
+  document.getElementById('mRated').textContent=rated+'/'+texts.length;
+  document.getElementById('mFlags').textContent=flags;
+  document.getElementById('mHints').textContent=hints;
+  document.getElementById('mReasons').textContent=reasons;
+
+  let conclusion='';
+  const revOk=reviewerState==='success'&&reviewerResult;
+  const revClass=revOk?String(reviewerResult.reviewer_classification||''):'';
+  const classNames={
+    L0:'логикалық қате анықталмады',
+    L1:'есеп шартын түсіну қатесі',
+    L2:'негізсіз болжам',
+    L3:'логикалық секіріс',
+    L4:'ережені немесе қасиетті қате қолдану',
+    L5:'жалған заңдылық / негізсіз жалпылау',
+    L6:'қайшылықты байқамау',
+    L7:'дұрыс жауапқа қате пайымдаумен келу',
+    L8:'қате қорытындыны сенімді негіздеу'
+  };
+  const studentLabel=cls?`${cls} — ${classNames[cls]||''}`:'санат таңдалмады';
+  const reviewerLabel=revClass?`${revClass} — ${classNames[revClass]||''}`:'бағалау аяқталмады';
+  const match=revOk&&cls&&revClass===cls;
+  let aiStatus='Тәуелсіз тексеру аяқталмағандықтан, ЖИ шешімінің мәртебесі нақтыланбады.';
+  if(revOk){
+    if(revClass==='L0') aiStatus='шешімнің қадамдары негізделген, логикалық қате анықталмады.';
+    else if(revClass==='L7') aiStatus='қорытынды дұрыс, бірақ оған қате пайымдау арқылы келген.';
+    else if(revClass==='L8') aiStatus='қорытынды қате және ол сенімді түрде негізделген.';
+    else aiStatus='шешімнің дәлелдеуінде немесе пайымдауында логикалық шектеу анықталды.';
+  }
+  const boxClass=revOk&&revClass==='L0'?'good':'warn';
+  const agreement=revOk
+    ? `<br><b>Сәйкестік:</b> ${match?'✓ Оқушы мен Reviewer қорытындысы сәйкес келді.':'Оқушы мен Reviewer жіктеуі сәйкес келмеді.'}`
+    : `<br><b>Сәйкестік:</b> тәуелсіз тексеру аяқталмады.`;
+  conclusion=`<div class="callout ${boxClass}"><b>Оқушының жіктеуі:</b> ${escSoc(studentLabel)}.<br><b>Тәуелсіз Reviewer жіктеуі:</b> ${escSoc(reviewerLabel)}.${agreement}<br><b>ЖИ шешімінің мәртебесі:</b> ${escSoc(aiStatus)}<br><b>Бастапқы күмәнді/қате белгілер саны:</b> ${flags}.</div>`;
+  document.getElementById('auditResult').innerHTML=conclusion+'<div style="margin-top:12px"><b>Зерттеу ізі:</b> бастапқы қадамдық бағалар → алғашқы дербес негіздемелер → көмек қолдану фактісі → түзету/қайта шешім → жалпы қорытынды → L0–L8 жіктеуі → тәуелсіз Reviewer.</div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+document.getElementById('restart').addEventListener('click',()=>location.reload());
+})();
+
+// ===== Prototype 7.3: сеансты автоматты сақтау =====
+const P7KEY='MathOlymTRAINER_P7_3_SESSION';
+let p7CurrentScreen=1;
+function p7Save(){
+  try{
+    localStorage.setItem(P7KEY,JSON.stringify({
+      screen:p7CurrentScreen,
+      ratings:{...ratings},
+      analyses:{...analyses},
+      texts:texts, aiConclusion:aiConclusion, verdict:verdict, cls:cls, flagged:flagged, flagPos:flagPos,
+      conclusion:(typeof conclusion!=='undefined'?conclusion:null),
+      hardStep:window.p7HardStep||null,
+      ts:Date.now()
+    }));
+  }catch(e){}
+}
+function p7Clear(){ try{localStorage.removeItem(P7KEY)}catch(e){} }
+function p7Restore(){
+  try{
+    const s=JSON.parse(localStorage.getItem(P7KEY)||'null');
+    if(!s) return false;
+    const savedRatings=(s.ratings&&typeof s.ratings==='object')?s.ratings:{};
+    const savedAnalyses=(s.analyses&&typeof s.analyses==='object')?s.analyses:{};
+    if(Array.isArray(s.texts)&&s.texts.length){texts=s.texts.map(String);aiConclusion=String(s.aiConclusion||'');renderDynamicSolution();}
+    Object.assign(ratings,savedRatings); Object.assign(analyses,savedAnalyses);
+    verdict=s.verdict||verdict; cls=s.cls||cls; flagged=Array.isArray(s.flagged)?s.flagged.map(Number):flagged; flagPos=Number.isInteger(s.flagPos)?s.flagPos:flagPos;
+    window.p7HardStep=s.hardStep||null;
+    if(s.screen && s.screen>=1 && s.screen<=8){ p7CurrentScreen=s.screen; setTimeout(()=>show(s.screen),0); }
+    return true;
+  }catch(e){return false}
+}
+window.addEventListener('beforeunload',p7Save);
+document.addEventListener('click',()=>{setTimeout(p7Save,50);setTimeout(p7UpdateClassificationFeedback,60)});
+document.addEventListener('input',()=>setTimeout(p7Save,100));
+
+
+window.addEventListener('load',()=>{setTimeout(p7Restore,80)});
+
+function p7UpdateClassificationFeedback(){
+  const box=document.getElementById('classFeedback');
+  if(!box) return;
+  let code=null;
+  if(typeof selectedL!=='undefined') code=selectedL;
+  if(!code && typeof classification!=='undefined') code=classification;
+  if(!code && typeof errorType!=='undefined') code=errorType;
+  if(!code){
+    const sel=document.querySelector('[data-l].selected,[data-code].selected,.ltype.selected');
+    if(sel) code=sel.dataset.l||sel.dataset.code||sel.textContent.trim().slice(0,2);
+  }
+  if(code){box.textContent=explainClassificationChoice(code);}
+}
+
+
+window.p7HardStep=null;
+document.addEventListener('click',(e)=>{
+  const b=e.target.closest && e.target.closest('[data-hard]');
+  if(!b) return;
+  window.p7HardStep=b.dataset.hard;
+  document.querySelectorAll('[data-hard]').forEach(x=>x.classList.remove('selected'));
+  b.classList.add('selected');
+  p7Save();
+});
+
+</script>
+<script>
+const SOC_TASKS = [
+{n:1,cat:'Алгебра',level:'Аудандық',title:'Теңсіздікті дәлелдеу',source:'2025–2026 аудандық, 9-сынып №1',url:'https://www.matol.kz/olympiads/1211?lang=kz',problem:'\\(a,b\\ge0,\\ a+b=1.\\) Дәлелде: \\(\\dfrac{a^2+b^2}{2}\\le a^3+b^3.\\)',steps:[
+ {q:'\\(a^3+b^3\\) өрнегін көбейткіштерге жіктеу үшін қай формула қажет?',o:['\\(a^3+b^3=(a+b)(a^2-ab+b^2)\\)','\\(a^3+b^3=(a+b)^3\\)','\\(a^3+b^3=(a-b)(a^2+ab+b^2)\\)'],a:0,h:'Қосынды кубтарының формуласын есіңе түсір.'},
+ {q:'\\(a+b=1\\) шартын пайдаланып, \\(a^3+b^3\\) өрнегін ықшамда.',o:['\\(a^2-ab+b^2\\)','\\(a^2+ab+b^2\\)','\\(1-ab\\)'],a:0,h:'Алдыңғы формуладағы \\(a+b\\) көбейткішінің орнына 1 қой.'},
+ {q:'Бастапқы теңсіздіктің оң жағына алынған өрнекті қой. Қай теңсіздікті дәлелдеу жеткілікті?',o:['\\(\\dfrac{a^2+b^2}{2}\\le a^2-ab+b^2\\)','\\(a^2+b^2\\le a^2-ab+b^2\\)','\\(\\dfrac{a^2+b^2}{2}\\ge a^2-ab+b^2\\)'],a:0,h:'Тек \\(a^3+b^3\\) орнына алдыңғы нәтижені қой.'},
+ {q:'Барлық мүшені бір жаққа жина.',o:['\\(a^2-ab+b^2-\\dfrac{a^2+b^2}{2}\\ge0\\)','\\(a^2+ab+b^2-\\dfrac{a^2+b^2}{2}\\ge0\\)','\\(a^2-ab+b^2+\\dfrac{a^2+b^2}{2}\\le0\\)'],a:0,h:'Оң жақтан сол жақты азайт.'},
+ {q:'Айырманы толық квадратқа келтір.',o:['\\(\\dfrac{(a-b)^2}{2}\\ge0\\)','\\(\\dfrac{(a+b)^2}{2}\\ge0\\)','\\(\\dfrac{a^2-b^2}{2}\\ge0\\)'],a:0,h:'Ортақ \\(\\tfrac12\\)-ді шығарып, \\(a^2-2ab+b^2\\) өрнегін таны.'},
+ {q:'Дәлелді қандай факт аяқтайды?',o:['\\((a-b)^2\\ge0\\)','\\(a+b=0\\)','\\(ab<0\\)'],a:0,h:'Кез келген нақты санның квадраты теріс емес.'}]},
+{n:2,cat:'Алгебра',level:'Олимпиадалық жаттығу',title:'Көпмүшені жіктеу',source:'MathOlymTRAINER базалық есеп',problem:'\\((a+b+c)^3-a^3-b^3-c^3\\) өрнегін көбейткіштерге жікте.',steps:[
+ {q:'Берілген өрнектегі \\(a+b+c\\) қосындысын \\((a+b)+c\\) түрінде топтастырып, өрнекті қайта жаз.',o:['\\(((a+b)+c)^3-a^3-b^3-c^3\\)','\\((a+b)^3+c^3-a^3-b^3-c^3\\)','\\((a+b+c)^2-a^3-b^3-c^3\\)'],a:0,h:'Алдымен тек \\(a+b+c\\) орнына \\((a+b)+c\\) жаз.'},
+ {q:'\\((x+y)^3=x^3+3x^2y+3xy^2+y^3\\) формуласын \\(((a+b)+c)^3\\) өрнегіне қолданып, \\(+c^3\\) пен \\(-c^3\\) мүшелерін қысқарт.',o:['\\((a+b)^3+3(a+b)^2c+3(a+b)c^2-a^3-b^3\\)','\\((a+b)^3+3(a+b)c^2-a^3-b^3\\)','\\((a+b)^3-a^3-b^3\\)'],a:0,h:'Кубты толық ашып, қарама-қарсы \\(c^3\\) мүшелерін қысқарт.'},
+ {q:'\\(a^3+b^3=(a+b)(a^2-ab+b^2)\\) формуласын \\(-a^3-b^3\\) бөлігіне қолданып, өрнекті түрлендір.',o:['\\((a+b)^3+3(a+b)^2c+3(a+b)c^2-(a+b)(a^2-ab+b^2)\\)','\\((a+b)^3-(a-b)(a^2+ab+b^2)\\)','\\((a+b)^3+3c^2-a^3-b^3\\)'],a:0,h:'\\(-a^3-b^3=-(a^3+b^3)\\).'},
+ {q:'Барлық мүшеден ортақ \\(a+b\\) көбейткішін шығар.',o:['\\((a+b)[(a+b)^2+3(a+b)c+3c^2-a^2+ab-b^2]\\)','\\((a+b)[a^2+b^2+c^2]\\)','\\((a+b+c)[a^2-ab+b^2]\\)'],a:0,h:'Әр мүшеде \\(a+b\\) көбейткіші бар.'},
+ {q:'Жақша ішіндегі \\((a+b)^2\\)-ты ашып, ұқсас мүшелерді біріктір.',o:['\\(3ab+3ac+3bc+3c^2\\)','\\(a^2+b^2+3c^2\\)','\\(3ab+ac+bc+c^2\\)'],a:0,h:'\\((a+b)^2=a^2+2ab+b^2\\).'},
+ {q:'\\(3ab+3ac+3bc+3c^2\\) өрнегінен ортақ 3-ті шығар.',o:['\\(3(ab+ac+bc+c^2)\\)','\\(3(a+b+c^2)\\)','\\(ab+ac+bc+c^2\\)'],a:0,h:'Төрт мүшенің де коэффициенті 3.'},
+ {q:'\\(ab+ac+bc+c^2\\) өрнегін топтастырып жікте.',o:['\\((a+c)(b+c)\\)','\\((a+b)(b+c)\\)','\\((a+c)(a+b)\\)'],a:0,h:'\\((ab+ac)+(bc+c^2)=a(b+c)+c(b+c)\\).'},
+ {q:'Толық жіктелген нәтижені таңда.',o:['\\(3(a+b)(a+c)(b+c)\\)','\\(3(a+b+c)(a+c)\\)','\\((a+b)(a+c)(b+c)\\)'],a:0,h:'Алдыңғы барлық көбейткіштерді біріктір.'}]},
+{n:3,cat:'Алгебра',level:'Олимпиадалық жаттығу',title:'Тепе-теңдікті дәлелдеу',source:'MathOlymTRAINER базалық есеп',problem:'\\(1\\cdot2+2\\cdot5+\\cdots+n(3n-1)=n^2(n+1)\\) екенін дәлелде.',steps:[
+ {q:'\\(k\\)-шы қосылғыштың жалпы түрін жаз.',o:['\\(k(3k-1)\\)','\\(3k-1\\)','\\(k^2(3-k)\\)'],a:0,h:'Соңғы қосылғыштың құрылымын \\(k\\)-ға көшір.'},
+ {q:'\\(k(3k-1)\\) көбейтіндісін аш.',o:['\\(3k^2-k\\)','\\(3k-k^2\\)','\\(3k^2+k\\)'],a:0,h:'\\(k\\)-ны жақша ішіндегі әр мүшеге көбейт.'},
+ {q:'Бүкіл қосындыны екі стандарт қосындыға бөл.',o:['\\(3\\sum_{k=1}^{n}k^2-\\sum_{k=1}^{n}k\\)','\\(3\\sum k-\\sum k^2\\)','\\(\\sum(3k-1)\\)'],a:0,h:'Қосындының сызықтылық қасиетін қолдан.'},
+ {q:'\\(\\sum_{k=1}^{n}k\\) үшін қажетті формуланы таңда.',o:['\\(\\dfrac{n(n+1)}2\\)','\\(n^2\\)','\\(\\dfrac{n(n-1)}2\\)'],a:0,h:'Алғашқы \\(n\\) натурал санның қосындысы.'},
+ {q:'\\(\\sum_{k=1}^{n}k^2\\) үшін қажетті формуланы таңда.',o:['\\(\\dfrac{n(n+1)(2n+1)}6\\)','\\(\\dfrac{n(n+1)}2\\)','\\(n^2(n+1)\\)'],a:0,h:'Квадраттар қосындысының стандарт формуласын есіңе түсір.'},
+ {q:'Екі формуланы \\(3\\sum k^2-\\sum k\\) өрнегіне қой.',o:['\\(3\\cdot\\dfrac{n(n+1)(2n+1)}6-\\dfrac{n(n+1)}2\\)','\\(3\\cdot\\dfrac{n(n+1)}2-\\dfrac{n(n+1)(2n+1)}6\\)','\\(\\dfrac{n(n+1)(2n+1)}6\\)'],a:0,h:'Әр қосындыны өз формуласымен алмастыр.'},
+ {q:'Ортақ \\(\\dfrac{n(n+1)}2\\) көбейткішін шығар.',o:['\\(\\dfrac{n(n+1)}2[(2n+1)-1]\\)','\\(\\dfrac{n(n+1)}2[(2n+1)+1]\\)','\\(\\dfrac{n(n+1)}2(2n-1)\\)'],a:0,h:'Бірінші мүшеде 3 пен 6 қысқарып, бөлімде 2 қалады.'},
+ {q:'Жақша ішін ықшамда.',o:['\\(2n\\)','\\(2n+1\\)','\\(n\\)'],a:0,h:'\\((2n+1)-1\\)-ді есепте.'},
+ {q:'Соңғы нәтижені жаз.',o:['\\(n^2(n+1)\\)','\\(n(n+1)\\)','\\(2n^2(n+1)\\)'],a:0,h:'\\(\\dfrac{n(n+1)}2\\cdot2n\\)-ді ықшамда.'}]},
+{n:4,cat:'Алгебра',level:'Облыстық',title:'Теңсіздікті дәлелдеу',source:'2024 облыстық, 9-сынып №6',url:'https://matol.kz/olympiads/1106?lang=kz',problem:'\\(a,b,c>0,\\ abc=1.\\) Дәлелде: \\(\\left(\\dfrac{a^3}{b}+\\dfrac{b^3}{c}+\\dfrac{c^3}{a}\\right)+2\\left(\\dfrac ab+\\dfrac bc+\\dfrac ca\\right)+(a+b+c)\\ge4(ab+bc+ca).\\)',steps:[
+ {q:'Теңсіздіктің сол жағындағы мүшелерді төрт бірдей топқа бөлу үшін әр циклдік блокты қалай қарастыру тиімді?',o:['\\(\\dfrac{a^3}{b},\\dfrac ab,\\dfrac ab,a\\) тәрізді төрт оң сан ретінде','Барлық мүшені бірден қосу','Тек \\(a+b+c\\)-ны қарастыру'],a:0,h:'Коэффициенті 2 тұрған бөлшекті екі бірдей мүше деп қара.'},
+ {q:'Төрт оң сан үшін қай теңсіздік қолайлы?',o:['Орта мән туралы теңсіздік','Пифагор теоремасы','Коши теңдігін ғана'],a:0,h:'Төрт оң санның арифметикалық ортасын геометриялық ортасымен салыстыр.'},
+ {q:'Бірінші топқа орта мән туралы теңсіздікті қолдан: \\(\\dfrac{a^3}{b}+\\dfrac ab+\\dfrac ab+a\\) төменнен немен бағаланады?',o:['\\(4\\sqrt[4]{\\dfrac{a^6}{b^3}}\\)','\\(4a\\)','\\(4ab\\)'],a:0,h:'Төрт мүшенің көбейтіндісін жаз.'},
+ {q:'\\(abc=1\\) шартынан \\(b=\\dfrac1{ac}\\). Осыны \\(\\sqrt[4]{a^6/b^3}\\) өрнегіне қойғанда не шығады?',o:['\\(a^{9/4}c^{3/4}\\)','\\(a^{3/4}c^{9/4}\\)','\\(a^{9/4}c^{1/4}\\)'],a:0,h:'\\(1/b^3=a^3c^3\\).'},
+ {q:'Бұл бағыт оң жақтағы \\(ab+bc+ca\\)-ға тікелей жеткізе ме?',o:['Жоқ, топтауды қайта қарау керек','Иә, бірден \\(ab\\) шығады','Шарт қажет емес'],a:0,h:'Мақсаттағы мүшелер \\(ab,bc,ca\\) түрінде болуы тиіс.'},
+ {q:'Мақсаттағы \\(ab\\)-ды алу үшін төрт санның көбейтіндісі \\((ab)^4\\) болуы керек. \\(\\dfrac{a^3}{b}\\)-мен бірге қай үш мүшені таңдауға болады?',o:['\\(\\dfrac bc,\\dfrac ca,c\\)','\\(\\dfrac ab,\\dfrac ab,a\\)','\\(a,b,c\\)'],a:0,h:'Көбейтіндіні пайдаланып тексер және \\(abc=1\\)-ді қолдан.'},
+ {q:'\\(\\dfrac{a^3}{b}\\cdot\\dfrac bc\\cdot\\dfrac ca\\cdot c\\) көбейтіндісін ықшамда.',o:['\\(a^3c\\)','\\(a^2c\\)','\\(a^3/c\\)'],a:0,h:'Алым мен бөлімдегі \\(b,c,a\\) көбейткіштерін қысқарт.'},
+ {q:'\\(abc=1\\) арқылы \\(a^3c\\)-ны \\((ab)^4\\)-пен салыстырғанда бұл да сәйкес емес. Бұл бізге нені көрсетеді?',o:['Мүшелерді цикл бойынша емес, мақсатқа сай қайта жұптау керегін','Теңсіздік қате екенін','\\(abc=1\\) қолданылмайтынын'],a:0,h:'Сократтық ізденісте жарамсыз бағытты ерте тану да маңызды.'},
+ {q:'Негізгі шешімде алдымен \\(\\dfrac{a^3}{b}\\) мүшесін қай қарапайым өрнекпен байланыстыру тиімді?',o:['\\(a^2\\) және қатынас мүшелерімен','Тек 1-мен','Тек \\(abc\\)-мен'],a:0,h:'Мақсат — \\(ab,bc,ca\\) мүшелерін шығару.'},
+ {q:'\\(abc=1\\) шартынан \\(a=\\dfrac1{bc}\\), \\(b=\\dfrac1{ca}\\), \\(c=\\dfrac1{ab}\\) түрлерін жазу не үшін пайдалы?',o:['Бөлшек мүшелерді көбейтінділермен салыстыру үшін','Айнымалыларды жою үшін ғана','Тек сандық жауап алу үшін'],a:0,h:'Қатынастар мен \\(ab,bc,ca\\) арасындағы байланысты ізде.'},
+ {q:'Келесі аралық мақсатты таңда.',o:['Сол жақты бірнеше AM-GM бағалары арқылы \\(4ab+4bc+4ca\\)-дан төмен емес ету','\\(a+b+c=3\\) дәлелдеу','Барлық бөлшектер 1-ге тең деу'],a:0,h:'Оң жақтың құрылымын дәл сақта.'},
+ {q:'Қай кезде орта мән туралы теңсіздікте теңдік орындалады?',o:['Топтағы оң сандар өзара тең болғанда','Кез келген уақытта','Олардың қосындысы 1 болғанда'],a:0,h:'AM-GM теңдік шарты.'},
+ {q:'Бастапқы теңсіздікте \\(a=b=c=1\\) болғанда екі жақты тексер.',o:['Екі жағы да 12','Сол жағы 12, оң жағы 10','Екі жағы да 8'],a:0,h:'\\(abc=1\\) және барлық бөлшек 1-ге тең.'},
+ {q:'Бұл тексеру нені растайды?',o:['Теңдік жағдайында теңсіздіктің екі жағы да бірдей мән қабылдайды.','Теңсіздік барлық жерде теңдік','Дәлел аяқталды'],a:0,h:'Теңдік жағдайын табу — дәлелдің дұрыстығын тексерудің бір бөлігі.'},
+ {q:'Енді циклдік үш мақсатты жеке жаз: қандай үш көбейтінді алынуы тиіс?',o:['\\(ab,bc,ca\\)','\\(a^2,b^2,c^2\\)','\\(a,b,c\\)'],a:0,h:'Оң жаққа қара.'},
+ {q:'Әр мақсатты алу үшін қолданылатын бағалаулардың бәрін қосқанда сол жақтағы әр мүше неше рет қолданылуы тиіс?',o:['Берілген коэффициентіне дәл сәйкес рет','Кемінде екі есе','Ерікті рет'],a:0,h:'\\(2\\sum a/b\\) мүшелерінің әрқайсысы екі рет пайдаланылуы мүмкін.'},
+ {q:'Сондықтан дәлелдің дұрыстығын тексерудің шешуші шарты қандай?',o:['AM-GM топтары сол жақ мүшелерін дәл жабуы және оң жақта \\(4(ab+bc+ca)\\) беруі','Тек соңғы сан дұрыс болуы','Бір мысал сәйкес болуы'],a:0,h:'Мүшелер жоғалмауы да, артық қолданылмауы да керек.'},
+ {q:'Теңсіздік дәлелінде «жауап дұрыс» деу үшін не жеткіліксіз?',o:['Тек соңғы қорытындының дұрыс болуы; әр аралық қадам да негізделуі керек','Әр қадамды тексеру','Теңдік жағдайын қарау'],a:0,h:'Бұл тренажёрдің зерттеу мақсатына тікелей қатысты.'},
+ {q:'Соңғы қорытындыны таңда.',o:['Берілген теңсіздік AM-GM (орта мән туралы теңсіздік) бағаларын дұрыс топтастырып қосу арқылы дәлелденеді','\\(abc=1\\) болғандықтан барлық айнымалы 1','Теңсіздік тек \\(a=b=c\\) кезінде ғана дұрыс'],a:0,h:'Әр қолданылған бағалау мен мүшелердің есебін тексеріп барып қорытынды жаса.'}]},
+{n:5,cat:'Геометрия',level:'Аудандық',title:'Квадрат және екі шеңбер',source:'2025–2026 аудандық, 9-сынып №4',url:'https://www.matol.kz/olympiads/1211?lang=kz',problem:'ABCD — квадрат. Центрі C, радиусы CB болатын шеңбер диаметрі AB болатын шеңбермен E нүктесінде қиылысады. AB=2. AE-ні тап.',steps:[
+ {q:'A(0;0), B(2;0), C(2;2) деп алайық. Диаметрі AB болатын шеңбердің теңдеуін таңда.',o:['(x−1)²+y²=1','x²+(y−1)²=1','(x−2)²+y²=2'],a:0,h:'Шеңбердің центрі — AB кесіндісінің ортасы (1;0), радиусы 1.'},
+ {q:'Центрі C(2;2), радиусы CB=2 болатын шеңбердің теңдеуін таңда.',o:['(x−2)²+(y−2)²=4','(x−2)²+(y−2)²=2','x²+y²=4'],a:0,h:'Шеңбер теңдеуі: (x−a)²+(y−b)²=r².'},
+ {q:'E(x;y) екі шеңберге де тиесілі. Екі теңдеуді пайдаланып, x пен y-ті байланыстыратын теңдеуді таңда.',o:['x+2y=2','2x+y=2','x+2y=4'],a:0,h:'Бірінші теңдеуді x²+y²=2x түріне келтіріп, екінші теңдеуге қой.'},
+ {q:'x+2y=2 теңдеуін шеңбер теңдеуімен бірге шеш. A нүктесінен өзге қиылысу нүктесі E-нің координаталарын таңда.',o:['E(2/5; 4/5)','E(4/5; 2/5)','E(2/5; 2/5)'],a:0,h:'x=2−2y деп алып, x²+y²=2x теңдеуіне қой. (0;0) — A нүктесі екенін ұмытпа.'},
+ {q:'A(0;0) және E(2/5; 4/5) нүктелерінің арақашықтығын есепте. AE неге тең?',o:['2√5/5','4√5/5','√5/5'],a:0,h:'AE=√((2/5)²+(4/5)²).'}]},
+{n:6,cat:'Геометрия',level:'Аудандық',title:'Биіктікті табу',source:'2019–2020 аудандық, 9-сынып №1',url:'https://matol.kz/olympiads/921?lang=ru',problem:'ABC — теңбүйірлі үшбұрыш: AB=AC, ∠B=36°. BD — B бұрышының биссектрисасы, D∈AC, BD=10. A төбесінен BC-ға түсірілген AH биіктігін тап.',steps:[
+ {q:'AB=AC болғандықтан ∠C неге тең?',o:['36°','54°','72°'],a:0,h:'Теңбүйірлі үшбұрыштың табан бұрыштары тең.'},
+ {q:'Үшбұрыш бұрыштарының қосындысын пайдаланып ∠A-ны тап.',o:['108°','90°','144°'],a:0,h:'180°−36°−36°.'},
+ {q:'BD — ∠B бұрышының биссектрисасы. ∠ABD неге тең?',o:['18°','36°','54°'],a:0,h:'36° бұрышты тең екі бөлікке бөл.'},
+ {q:'△ABD-де ∠BAD=108°, ∠ABD=18°. ∠ADB-ны тап.',o:['54°','72°','36°'],a:0,h:'Үшбұрыш бұрыштарының қосындысы 180°.'},
+ {q:'△ABD-де BD мен AB қабырғаларын байланыстыру үшін қай теореманы қолданған тиімді?',o:['Синустар теоремасы','Косинустар теоремасы','Биссектриса теоремасы'],a:0,h:'BD мен AB-ға қарсы жатқан бұрыштар белгілі.'},
+ {q:'△ABD үшін синустар теоремасының дұрыс қатынасын таңда.',o:['BD/sin108° = AB/sin54°','BD/sin54° = AB/sin108°','BD/sin18° = AB/sin54°'],a:0,h:'BD-ға қарсы бұрыш — 108°, ал AB-ға қарсы бұрыш — 54°.'},
+ {q:'BD = AB·sin108°/sin54° қатынасын ықшамда. Қай нәтиже шығады?',o:['BD=2AB·sin36°','BD=AB·sin36°','BD=2AB·cos36°'],a:0,h:'sin108°=sin72°=2sin36°cos36°, ал sin54°=cos36°.'},
+ {q:'AH⊥BC. Тікбұрышты △ABH-тан AH-ты AB арқылы өрнекте.',o:['AH=AB·sin36°','AH=AB·cos36°','AH=AB/sin36°'],a:0,h:'∠ABH=36°, AB — гипотенуза, AH — осы бұрышқа қарсы катет.'},
+ {q:'BD=2AB·sin36° және AH=AB·sin36°. BD=10 болса, AH неге тең?',o:['5','10','20'],a:0,h:'Алдымен BD мен AH арасындағы байланысты байқа: BD=2AH.'}]},
+{n:7,cat:'Геометрия',level:'Облыстық',title:'Бұрыштар теңдігін дәлелдеу',source:'2024 облыстық, 9-сынып №3 • А. Васильев',url:'https://matol.kz/comments/5445/show?lang=ru',problem:'ABC үшбұрышының AC қабырғасында D нүктесі AB·AD=CB·CD болатындай алынған. M — BD кесіндісінің ортасы. Егер ∠AMC=90° болса, ∠CAM+∠BCM=∠ACM+∠BAM теңдігін дәлелде.',steps:[
+ {q:'∠AMC=90°. △AMC-да сырттай сызылған шеңбердің центрін оңай анықтау үшін қай кесіндінің ортасын қарастырған тиімді?',o:['AC','AM','CM'],a:0,h:'Тікбұрышты үшбұрышта сырттай сызылған шеңбердің центрі гипотенузаның ортасында жатады.'},
+ {q:'N — AC гипотенузасының ортасы. Қандай теңдік орындалады?',o:['AN=CN=MN','AN=MN=AM','CN=MN=CM'],a:0,h:'Тікбұрышты үшбұрыш гипотенузасының ортасы оның үш төбесінен бірдей қашықтықта жатады.'},
+ {q:'AB·AD=BC·CD шартын бұрыш биссектрисасымен байланыстыру үшін D-ға қатысты қандай қосымша нүкте енгізу тиімді?',o:['D-ны N-ге қатысты симметриялап D′ алу','D-ны M-ге қатысты симметриялап D′ алу','B-ны N-ге қатысты симметриялап B′ алу'],a:0,h:'N нүктесі AC кесіндісінің ортасы екенін пайдаланатындай симметрияны таңда.'},
+ {q:'D′ — D-ның N-ге қатысты симметриялы нүктесі. Қандай теңдіктер дұрыс?',o:['AD′=CD және CD′=AD','AD′=AD және CD′=CD','AD′=CD′ және AD=CD'],a:0,h:'N — AC-дың да, DD′-тың да ортасы.'},
+ {q:'AB·AD=BC·CD және AD=CD′, CD=AD′. Қай қатынас шығады?',o:['AB/BC=AD′/CD′','AB/BC=CD′/AD′','AB/AD′=BC/CD′'],a:0,h:'Алдымен AB·CD′=BC·AD′ түріне келтір.'},
+ {q:'D′∈AC және AB/BC=AD′/CD′. BD′ сәулесінің қандай қасиеті шығады?',o:['BD′ — ∠ABC бұрышының биссектрисасы','BD′ — AC қабырғасына жүргізілген медиана','BD′⊥AC'],a:0,h:'Бұрыш биссектрисасы теоремасының кері тұжырымын қолдан.'},
+ {q:'△BDD′-те M — BD-ның, N — DD′-тың ортасы. MN мен BD′ арасында қандай байланыс бар?',o:['MN∥BD′','MN⊥BD′','MN∥BD'],a:0,h:'MN — △BDD′ үшбұрышының орта сызығы.'},
+ {q:'∠ACM=α, ∠MCB=β. ∠AMC=90° болса, ∠CAM неге тең?',o:['90°−α','90°−β','α+β'],a:0,h:'△AMC бұрыштарының қосындысын пайдалан.'},
+ {q:'A, M, C нүктелері центрі N болатын шеңберде жатыр. ∠ACM=α болса, ∠ANM неге тең?',o:['2α','α','180°−2α'],a:0,h:'Бір доғаға тірелетін орталық бұрыш іштей бұрыштан екі есе үлкен.'},
+ {q:'A,N,C бір түзуде, MN∥BD′. △BCD′ бұрыштарын пайдаланып ∠D′BC-ны тап.',o:['α−β','α+β','2α−β'],a:0,h:'∠MNC=180°−2α, сондықтан ∠BD′C=180°−2α; ал ∠BCD′=α+β.'},
+ {q:'BD′ — ∠ABC бұрышының биссектрисасы және ∠D′BC=α−β. ∠ABC неге тең және одан ∠BAM қандай өрнекке келеді?',o:['∠ABC=2α−2β, ∠BAM=90°−2α+β','∠ABC=α−β, ∠BAM=90°−α+β','∠ABC=2α+2β, ∠BAM=90°−2α−β'],a:0,h:'Алдымен ∠BCA=α+β арқылы ∠BAC-ты тап, содан соң ∠MAC=90°−α екенін пайдалан.'},
+ {q:'∠CAM+∠BCM және ∠ACM+∠BAM өрнектерін ықшамдағанда қандай нәтиже шығады?',o:['Екі жағы да 90°−α+β','Екі жағы да 90°+α−β','Екі жағы әртүрлі'],a:0,h:'Сол жаққа ∠CAM=90°−α, ∠BCM=β; оң жаққа ∠ACM=α, ∠BAM=90°−2α+β қой.'}]},
+{n:8,cat:'Геометрия',level:'Облыстық',title:'Тең қабырғалы алтыбұрыш',source:'2025 облыстық, 9-сынып №4 • М. Нсанбаев',url:'https://matol.kz/olympiads/1144?lang=kz',problem:'ABCDEF — барлық қабырғалары тең алтыбұрыш. ∠A=∠B=∠D=∠E=150°, ∠C=∠F=60°. AC және BF түзулері O нүктесінде қиылысады. Центрі O болатын және A нүктесі арқылы өтетін шеңбер CF түзуін P және Q нүктелерінде қияды, мұнда FP<FQ. FP/AB қатынасын тап.',steps:[
+ {q:'Алдымен △ABC-ны қарастыр. AB=BC және ∠ABC=150° болса, ∠BAC неге тең?',o:['15°','30°','75°'],a:0,h:'△ABC теңбүйірлі. Қалған екі бұрыш тең.'},
+ {q:'O нүктесі AC түзуінде жатқандықтан ∠OAB неге тең?',o:['15°','60°','150°'],a:0,h:'AO сәулесі AC сәулесімен бағыттас.'},
+ {q:'△ABF-ты қарастыр. AB=AF және ∠BAF=150° болса, ∠ABF неге тең?',o:['15°','30°','75°'],a:0,h:'Бұл да теңбүйірлі үшбұрыш.'},
+ {q:'O нүктесі BF түзуінде жатқандықтан ∠ABO неге тең?',o:['15°','60°','150°'],a:0,h:'BO сәулесі BF сәулесімен бағыттас.'},
+ {q:'△AOB-да ∠OAB=∠ABO=15°. ∠AOB-ты тап.',o:['150°','75°','30°'],a:0,h:'Үшбұрыш бұрыштарының қосындысы 180°.'},
+ {q:'∠OAB=∠ABO болғандықтан OA мен OB арасында қандай байланыс бар?',o:['OA=OB','OA=2OB','OA⊥OB'],a:0,h:'Тең бұрыштарға қарсы жатқан қабырғалар тең.'},
+ {q:'FP=AB болатындай CF түзуінен көмекші P₁ нүктесін алайық. Алтыбұрыштың геометриясынан CF∥AB. ABP₁F төртбұрышы туралы не айтуға болады?',o:['Ол параллелограмм','Ол трапеция, бірақ параллелограмм емес','Ол міндетті түрде квадрат'],a:0,h:'AB және FP₁ әрі тең, әрі параллель.'},
+ {q:'ABP₁F параллелограммында AB=AF. Сондықтан ол қандай төртбұрыш?',o:['Ромб','Тіктөртбұрыш','Теңбүйірлі трапеция'],a:0,h:'Параллелограмның көршілес екі қабырғасы тең болса, барлық қабырғалары тең.'},
+ {q:'Ромбта ∠BAF=150°. Оның P₁ төбесіндегі ∠BP₁F бұрышы неге тең?',o:['150°','30°','75°'],a:0,h:'Ромбтың қарама-қарсы бұрыштары тең.'},
+ {q:'△ABP₁-де AB=BP₁ және ∠ABP₁=30°. ∠AP₁B неге тең?',o:['75°','30°','15°'],a:0,h:'ABP₁F ромбында көршілес бұрыштар қосындысы 180°, содан кейін теңбүйірлі △ABP₁-ды қара.'},
+ {q:'∠AOB=150° және ∠AP₁B=75°. Бұл екі бұрыштың байланысы қандай?',o:['∠AOB=2∠AP₁B','∠AOB=∠AP₁B','2∠AOB=∠AP₁B'],a:0,h:'150°=2·75°.'},
+ {q:'OA=OB және ∠AOB=2∠AP₁B. Осыдан P₁ туралы қандай қорытынды шығады?',o:['P₁ центрі O болатын, A арқылы өтетін шеңберде жатады','P₁ нүктесі AB кесіндісінің ортасы','OP₁∥AB'],a:0,h:'Центрлік бұрыш пен сол хордаға тірелетін іштей бұрыштың байланысын пайдалан.'},
+ {q:'P₁∈CF және ол берілген шеңберде жатыр. Оның үстіне FP₁=AB. Есептегі жақын қиылысу нүктесі P үшін қандай қорытынды аламыз?',o:['FP=AB','FP=2AB','FP=AB/2'],a:0,h:'P₁ — CF пен шеңбердің F-ке жақын қиылысу нүктесі.'},
+ {q:'Соңғы жауапты таңда: FP/AB неге тең?',o:['1','2','1/2'],a:0,h:'FP=AB.'}]},
+{n:9,cat:'Сандар теориясы',level:'I — Бастапқы',title:'Бөлінгіштік және қалдық',source:'MathOlymTRAINER таңдалған есеп',problem:'n — натурал сан. n²+2n+2 саны n+3-ке бөлінеді. Барлық n-ді тап.',steps:[
+ {q:'n²+2n+2 өрнегін n+3 көбейткіші және тұрақты қалдық арқылы жазу үшін қай түрлендіру ыңғайлы?',o:['n²+2n+2=n²+2n−3+5','n²+2n+2=n²+3n+2','n²+2n+2=n²−3n+2'],a:0,h:'n+3 көбейткішін алу үшін n²+2n−3 бөлігін қара.'},
+ {q:'Алдыңғы түрлендіруден дұрыс жіктеуді таңда.',o:['n²+2n+2=(n+3)(n−1)+5','n²+2n+2=(n+3)(n+1)+5','n²+2n+2=(n−3)(n+1)+5'],a:0,h:'(n+3)(n−1)=n²+2n−3.'},
+ {q:'n²+2n+2 саны n+3-ке бөлінсе, алынған жіктеуден қандай бөлінгіштік шығады?',o:['n+3 | 5','5 | n+3','n | 5'],a:0,h:'(n+3)(n−1) бөлігі n+3-ке бөлінеді, сондықтан қалдық 5 те бөлінуі керек.'},
+ {q:'n натурал сан болғандықтан n+3 туралы қай тұжырым дұрыс?',o:['n+3≥4','n+3≤3','n+3=1'],a:0,h:'n≥1.'},
+ {q:'n+3 — 5-тің оң бөлгіші және n+3≥4. Қай мән ғана мүмкін?',o:['n+3=5','n+3=1','n+3=−5'],a:0,h:'5-тің оң бөлгіштері 1 және 5.'},
+ {q:'Осыдан n-нің мәнін таңда.',o:['n=2','n=5','n=8'],a:0,h:'n+3=5.'},
+ {q:'n=2 мәнін бастапқы шартпен тексергенде не аламыз?',o:['n²+2n+2=10 және n+3=5, сондықтан шарт орындалады','n²+2n+2=8 және n+3=5, шарт орындалмайды','n²+2n+2=10 және n+3=4, шарт орындалмайды'],a:0,h:'2²+2·2+2 және 2+3 мәндерін есепте.'}]},
+{n:10,cat:'Сандар теориясы',level:'II — Орта',title:'Цифрлар қосындысы',source:'2025–2026 аудандық, 9-сынып №3',url:'https://www.matol.kz/olympiads/1211?lang=kz',problem:'s(m) — m санының цифрлар қосындысы. s(n²)+2s(n+2)=2025 теңдеуінің натурал шешімі жоқ екенін дәлелде.',steps:[
+ {q:'Цифрлар қосындысы мен санның өзін байланыстыратын негізгі қасиетті таңда.',o:['s(m)≡m (mod 9)','s(m)≡0 (mod 9) әрқашан','s(m)=m әрқашан'],a:0,h:'10≡1 (mod 9) екенін пайдалан.'},
+ {q:'2025 санының 9-ға бөлгендегі қалдығы қандай?',o:['0','3','6'],a:0,h:'2+0+2+5=9.'},
+ {q:'Берілген теңдеуді mod 9 бойынша жазғанда қай салыстыру шығады?',o:['n²+2(n+2)≡0 (mod 9)','n²+n+2≡0 (mod 9)','2n²+n≡0 (mod 9)'],a:0,h:'s(n²)≡n² және s(n+2)≡n+2 (mod 9).'},
+ {q:'n²+2(n+2) өрнегін ықшамда.',o:['n²+2n+4','n²+2n+2','n²+4n+4'],a:0,h:'Жақшаны аш.'},
+ {q:'n²+2n+4 өрнегін толық квадрат арқылы қалай жазуға болады?',o:['(n+1)²+3','(n+2)²','(n−1)²+3'],a:0,h:'(n+1)²=n²+2n+1.'},
+ {q:'Осыдан mod 9 бойынша қандай салыстыру аламыз?',o:['(n+1)²≡6 (mod 9)','(n+1)²≡3 (mod 9)','(n+1)²≡0 (mod 9)'],a:0,h:'(n+1)²+3≡0 (mod 9).'},
+ {q:'Кез келген бүтін санның квадраты mod 9 бойынша қандай қалдықтардың бірін ғана бере алады?',o:['0, 1, 4, 7','0, 2, 5, 8','1, 3, 6, 8'],a:0,h:'0²,1²,…,8² қалдықтарын тексер.'},
+ {q:'6 саны mod 9 бойынша квадраттық қалдық па?',o:['Жоқ, 6 тізімде жоқ','Иә, 6=3² (mod 9)','Иә, кез келген қалдық квадрат бола алады'],a:0,h:'Алдыңғы қадамдағы 0,1,4,7 тізімімен салыстыр.'},
+ {q:'(n+1)²≡6 (mod 9) салыстыруы нені білдіреді?',o:['Мұндай бүтін n жоқ','n міндетті түрде 6-ға тең','n тек тақ сан болуы керек'],a:0,h:'6 квадраттық қалдық емес.'},
+ {q:'Бастапқы теңдеу туралы соңғы қорытындыны таңда.',o:['Натурал шешімі жоқ','Барлық натурал n шешім болады','Тек n=1 шешім болады'],a:0,h:'Кез келген шешім мүмкін емес модульдік салыстыруға әкелді.'}]},
+{n:11,cat:'Сандар теориясы',level:'III — Күрделі',title:'Жай сандар',source:'2024 облыстық, 9-сынып №1 • А. Васильев',url:'https://matol.kz/olympiads/1106?lang=kz',problem:'p,q,r — жай сандар. p−q+r=√(p+q+r). Барлық (p,q,r) үштігін тап.',steps:[
+ {q:'p−q+r бүтін сан. Сондықтан √(p+q+r) туралы қандай қорытынды дұрыс?',o:['Ол бүтін оң сан','Ол міндетті иррационал сан','Ол 0 мен 1 арасында'],a:0,h:'Түбір теңдіктің бүтін сол жағына тең.'},
+ {q:'x=p−q+r деп белгілейік. Сонда түбірге қатысты қай теңдік дұрыс?',o:['x²=p+q+r','x=p+q+r','2x=p+q+r'],a:0,h:'x=√(p+q+r).'},
+ {q:'x=p−q+r теңдігін p+r арқылы жаз.',o:['p+r=x+q','p+r=x−q','p+r=q−x'],a:0,h:'q-ды теңдіктің оң жағына көшір.'},
+ {q:'x²=p+q+r теңдігін p+r арқылы жаз.',o:['p+r=x²−q','p+r=x²+q','p+r=q−x²'],a:0,h:'q-ды азайт.'},
+ {q:'p+r үшін алынған екі өрнекті теңестіргенде не шығады?',o:['x+q=x²−q','x−q=x²+q','x+q=x²+q'],a:0,h:'Екі өрнек те p+r-ге тең.'},
+ {q:'Алдыңғы теңдіктен q-ды x арқылы өрнекте.',o:['q=x(x−1)/2','q=x(x+1)/2','q=(x−1)/2'],a:0,h:'2q=x²−x.'},
+ {q:'q — жай сан. x(x−1)=2q теңдігін ескерсек, x пен x−1 туралы не маңызды?',o:['Олар өзара жай қатар тұрған сандар','Екеуі де міндетті жұп','Екеуі де q-ға бөлінеді'],a:0,h:'Қатар тұрған екі бүтін санның ЕҮОБ-ы 1.'},
+ {q:'x(x−1)=2q көбейтіндісінде жай көбейткіштер тек 2 және q. x пен x−1 өзара жай болғандықтан қандай мүмкіндік қалады?',o:['{x−1,x}={2,q}','x=q және x−1=q','x=2q және x−1=2q'],a:0,h:'Өзара жай екі көршілес көбейткіш 2q-дың жай көбейткіштерін бөлісіп алуы тиіс.'},
+ {q:'x пен x−1 қатар тұрғандықтан {x−1,x}={2,q} шарты қай мәндерді береді?',o:['x=3, q=3','x=2, q=3','x=4, q=2'],a:0,h:'2 мен q айырмасы 1 болуы керек, q — жай.'},
+ {q:'x=3 және q=3 болғанда p+r мәнін тап.',o:['p+r=6','p+r=9','p+r=3'],a:0,h:'p+r=x+q.'},
+ {q:'p және r — жай сандар, p+r=6. Қай жұп мүмкін?',o:['p=3, r=3','p=2, r=4','p=5, r=1'],a:0,h:'Екі сан да жай болуы керек.'},
+ {q:'Табылған (p,q,r) үштігін бастапқы теңдікте тексер.',o:['3−3+3=3 және √(3+3+3)=3','3−3+3=3, бірақ √9≠3','3+3+3=9, сондықтан жарамайды'],a:0,h:'Екі жақты жеке есепте.'},
+ {q:'Барлық шешім туралы қорытындыны таңда.',o:['Жалғыз шешім — (3,3,3)','(2,3,2) және (3,3,3)','Кез келген p=r жай саны жарайды'],a:0,h:'q-дың жай болуы x-ті жалғыз мүмкіндікке дейін шектеді.'}]},
+{n:12,cat:'Сандар теориясы',level:'Облыстық',title:'Цифрды тіркеу және жай сандар',source:'2025 облыстық, 9-сынып №1(a) • А. Васильев',url:'https://matol.kz/olympiads/1144?lang=kz',problem:'p — жай сан. p санының ондық жазуының сол жағына 2 цифрын тіркеп жазсақ, алынған сан жай сан болады. p-ның оң жағына 1 цифрын тіркеп жазсақ, алынған сан да жай сан болады. Барлық осындай p жай сандарын тап.',steps:[
+ {q:'p санының цифрлар қосындысын s(p) деп белгілейік. p-ның алдына 2 цифрын тіркегендегі санның цифрлар қосындысы неге тең?',o:['s(p)+2','s(p)+1','2s(p)'],a:0,h:'Жаңа санның цифрларына тек 2 цифры қосылады.'},
+ {q:'p-ның соңына 1 цифрын тіркегендегі санның цифрлар қосындысы неге тең?',o:['s(p)+1','s(p)+2','s(p)−1'],a:0,h:'Жаңа цифрлар қосындысына 1 қосылады.'},
+ {q:'s(p), s(p)+1, s(p)+2 сандарының арасында қандай маңызды заңдылық бар?',o:['Біреуі міндетті түрде 3-ке бөлінеді','Үшеуі де жұп','Біреуі міндетті түрде 5-ке бөлінеді'],a:0,h:'Бұлар — қатар тұрған үш бүтін сан.'},
+ {q:'Егер санның цифрлар қосындысы 3-ке бөлінсе, санның өзі туралы не айтуға болады?',o:['Сан 3-ке бөлінеді','Сан 9-ға міндетті түрде бөлінеді','Сан міндетті түрде жай'],a:0,h:'3-ке бөлінгіштік белгісін есіңе түсір.'},
+ {q:'A — p-ның алдына 2 тіркелген сан, B — p-ның соңына 1 тіркелген сан болсын. Алдыңғы қадамдардан p, A, B сандары туралы не шығады?',o:['Олардың біреуі міндетті түрде 3-ке бөлінеді','Үшеуі де 3-ке бөлінеді','Ешқайсысы 3-ке бөлінбейді'],a:0,h:'Олардың цифрлар қосындылары қатар тұрған үш сан.'},
+ {q:'A немесе B саны 3-ке бөлінуі мүмкін бе, егер екеуі де көптаңбалы жай сандар болса?',o:['Жоқ, екеуі де мүмкін емес','Иә, екеуі де мүмкін','Тек A мүмкін'],a:0,h:'3-тен үлкен және 3-ке бөлінетін сан құрама болады.'},
+ {q:'Онда 3-ке бөлінетін сан қайсысы және p неге тең?',o:['p; сондықтан p=3','A; сондықтан p=2','B; сондықтан p=5'],a:0,h:'p,A,B-ның біреуі 3-ке бөлінеді, ал A мен B бола алмайды. p — жай сан.'},
+ {q:'p=3 мәнін бастапқы шартпен тексер.',o:['23 және 31 — екеуі де жай, сондықтан p=3 жарайды','23 құрама, сондықтан p=3 жарамайды','31 құрама, сондықтан шешім жоқ'],a:0,h:'Алдына 2 тіркесең — 23, соңына 1 тіркесең — 31.'}]},
+{n:13,cat:'Комбинаторика',level:'Аудандық',title:'2 қыз және 7 ұл',source:'2025–2026 аудандық, 9-сынып №2',url:'https://www.matol.kz/olympiads/1211?lang=kz',problem:'2 қыз және 7 ұлды үш адамнан тұратын үш топқа бөл. Әр топта кемінде 2 ұл болсын. Неше тәсіл?',steps:[
+ {q:'Әр топта 3 адам және кемінде 2 ұл болуы керек. Екі қыз бір топта бірге бола ала ма?',o:['Жоқ, ондай топта тек 1 ұл қалар еді','Иә, өйткені топта 3 адам бар','Иә, бірақ тек бір топта ғана'],a:0,h:'Екі қыз бір топқа түссе, үшінші орынға неше ұл ғана сыяды?'},
+ {q:'Екі қыз бірге бола алмаса, олар үш топқа қалай орналасады?',o:['Екі қыз екі бөлек топқа түседі','Екі қыз да ұлдарсыз жеке топ құрады','Екі қыз міндетті түрде үшінші топқа түседі'],a:0,h:'Әр қыз тұрған топта тағы екі орын қалады.'},
+ {q:'Сонда үш топтың құрамы қандай болуы тиіс?',o:['(1 қыз+2 ұл), (1 қыз+2 ұл), (3 ұл)','(2 қыз+1 ұл), (3 ұл), (3 ұл)','(1 қыз+1 ұл), (1 қыз+3 ұл), (3 ұл)'],a:0,h:'Барлығы 2 қыз және 7 ұл екенін тексер.'},
+ {q:'Бірінші қызбен бір топқа түсетін 2 ұлды 7 ұлдың ішінен таңдағанда, рет маңызды ма?',o:['Жоқ, тек қай екі ұл таңдалғаны маңызды','Иә, екі ұлдың орналасу реті маңызды','Тек бірінші таңдалған ұл ғана маңызды'],a:0,h:'Топтың ішінде орындар нөмірленбеген.'},
+ {q:'Бірінші қызға 2 ұлды неше тәсілмен таңдаймыз?',o:['C(7,2)=21','7·6=42','C(7,3)=35'],a:0,h:'7 ұлдың ішінен ретсіз 2 ұл таңдалады.'},
+ {q:'Бірінші топ құрылғаннан кейін неше ұл қалады?',o:['5 ұл','4 ұл','3 ұл'],a:0,h:'7 ұлдың екеуі бірінші қыздың тобына кетті.'},
+ {q:'Екінші қызға қалған 5 ұлдың ішінен 2 ұлды неше тәсілмен таңдаймыз?',o:['C(5,2)=10','5·4=20','C(5,3)=10, сондықтан 3 ұл таңдаймыз'],a:0,h:'Екінші қыздың тобына да дәл 2 ұл керек.'},
+ {q:'Осы екі таңдау жасалғаннан кейін қалған 3 ұлмен не істейміз?',o:['Олар автоматты түрде үшінші топты құрайды','Олардың ішінен тағы 2 ұл таңдаймыз','Оларды қыздары бар топтарға қайта бөлеміз'],a:0,h:'Үшінші топта 3 адам болуы керек және қыз қалған жоқ.'},
+ {q:'Үш топ атаусыз болғандықтан, 21·10 нәтижесін 3!-ке бөлу керек пе?',o:['Жоқ, қыздары бар екі топ сол қыздар арқылы ажыратылады, ал үшінші топ қалған ұлдардан анықталады','Иә, міндетті түрде 3!-ке бөлеміз','Тек 2!-ге бөлеміз, өйткені екі қыз бар'],a:0,h:'Бір бөлуді бірнеше рет санап қойдық па, соны тексер.'},
+ {q:'Барлық мүмкін бөлулер саны қанша?',o:['C(7,2)·C(5,2)=21·10=210','C(7,2)+C(5,2)=31','21·10/6=35'],a:0,h:'Алдыңғы екі тәуелді таңдаудың санын көбейт.'}]},
+{n:14,cat:'Комбинаторика',level:'Облыстық',title:'Әртүрлі көбейтінділер',source:'2025 облыстық, 9-сынып №5',url:'https://matol.kz/olympiads/1144?lang=kz',problem:'A файлында кез келген екі сан өзара әртүрлі болатындай 1014 оң сан жазылған. B файлына A файлындағы әртүрлі екі санның барлық ab көбейтінділері жазылады. Егер бірнеше жұптан бірдей көбейтінді шықса, оның тек біреуі ғана жазылады. B файлында ең аз дегенде неше сан болуы мүмкін?',steps:[
+ {q:'Есепте барлық сандар оң және әртүрлі. Оларды зерттеуге ыңғайлы болу үшін қалай белгілер едің?',o:['a₁=a₂=…=a₁₀₁₄','a₁>a₂<a₃>…','0<a₁<a₂<…<a₁₀₁₄','Реттеудің қажеті жоқ'],a:2,h:'Сандардың барлығы оң әрі өзара әртүрлі. Оларды өсу ретімен орналастыруға болады.'},
+ {q:'Ең кіші a₁ санын өзінен басқа барлық сандарға көбейтсек, қандай тізбек аламыз?',o:['a₁a₂, a₁a₃, …, a₁a₁₀₁₄','a₁², a₂², …, a₁₀₁₄²','a₂a₃, a₃a₄, …, a₁₀₁₃a₁₀₁₄','a₁+a₂, a₁+a₃, …, a₁+a₁₀₁₄'],a:0,h:'a₁-ді қалған 1013 санның әрқайсысына бір рет көбейт.'},
+ {q:'a₁a₂, a₁a₃, …, a₁a₁₀₁₄ көбейтінділері бір-бірінен әртүрлі ме?',o:['Жоқ, кейбіреуі міндетті түрде тең','Иә, себебі a₁>0 және a₂<a₃<…<a₁₀₁₄','Тек a₁=1 болса ғана әртүрлі','Берілген шарттардан анықтау мүмкін емес'],a:1,h:'Оң a₁ санына a₂<a₃<…<a₁₀₁₄ теңсіздігін көбейт.'},
+ {q:'Бірінші тізбекте неше әртүрлі көбейтінді бар?',o:['1012','1013','1014','2025'],a:1,h:'a₁ саны өзінен басқа неше санға көбейтілді?'},
+ {q:'Бізде 1013 әртүрлі көбейтінді бар. Олардың барлығынан үлкен болатын жаңа көбейтінділерді алуға қай идея тиімді?',o:['Ең үлкен a₁₀₁₄ санын a₂,a₃,…,a₁₀₁₃ сандарына көбейту','a₁ санын қайтадан сол сандарға көбейту','Барлық сандарды өз-өзіне көбейту','Сандардың қосындыларын қарастыру'],a:0,h:'Ең үлкен a₁₀₁₄ санын пайдалануға тырыс.'},
+ {q:'Бірінші тізбектегі ең үлкен көбейтінді қайсы?',o:['a₁a₂','a₂a₁₀₁₄','a₁a₁₀₁₄','a₁₀₁₃a₁₀₁₄'],a:2,h:'a₁ тұрақты. Екінші көбейткіштің ең үлкенін таңда.'},
+ {q:'Екінші тізбектегі ең кіші көбейтінді қайсы?',o:['a₁a₁₀₁₄','a₂a₁₀₁₄','a₁₀₁₃a₁₀₁₄','a₂a₃'],a:1,h:'a₁₀₁₄ тұрақты. a₂,a₃,…,a₁₀₁₃ ішіндегі ең кішісін таңда.'},
+ {q:'a₁a₁₀₁₄ және a₂a₁₀₁₄ көбейтінділерін дұрыс салыстыр.',o:['a₁a₁₀₁₄>a₂a₁₀₁₄','a₁a₁₀₁₄=a₂a₁₀₁₄','a₁a₁₀₁₄<a₂a₁₀₁₄','Салыстыру мүмкін емес'],a:2,h:'a₁<a₂ және a₁₀₁₄>0.'},
+ {q:'a₂a₁₀₁₄, a₃a₁₀₁₄, …, a₁₀₁₃a₁₀₁₄ тізбегінде неше жаңа көбейтінді бар?',o:['1011','1012','1013','2025'],a:1,h:'Индекстер 2-ден 1013-ке дейін.'},
+ {q:'Екі тізбек қиылыспайтындықтан, B файлында кемінде неше әртүрлі сан болуы міндетті?',o:['1013+1012=2025','1013·1012','1014','2026'],a:0,h:'Бірінші және екінші тізбектегі әртүрлі элементтер санын қос.'},
+ {q:'|B|≥2025 екенін дәлелдегеннен кейін бірден «ең аз саны 2025» деп қорытынды жасауға бола ма?',o:['Иә, 2025 саны шықты','Жоқ, дәл 2025 болатын мысал бар екенін де көрсету керек','Жоқ, 2025-ті екіге бөлу керек','Иә, өйткені барлық жұптардың көбейтінділері әртүрлі'],a:1,h:'«Кемінде» деген төменгі шек. Минимум үшін сол шекке жететін мысал да қажет.'},
+ {q:'Көптеген әртүрлі жұптардан бірдей көбейтінділер шығуы үшін A-дағы сандарды қандай заңдылықпен таңдаған тиімді?',o:['Арифметикалық прогрессия','Геометриялық прогрессия','Кездейсоқ сандар','Тек жай сандар'],a:1,h:'Бірдей негіздің дәрежелерін көбейткенде көрсеткіштер қосылады.'},
+ {q:'Негізі 2 болатын 1014 саннан тұратын қолайлы жиынды таңда.',o:['A={1,2,2²,…,2¹⁰¹³}','A={1,2,3,…,1014}','A={2,4,6,…,2028}','A={2¹,2²,…,2¹⁰¹⁴}'],a:0,h:'Көрсеткіштерді 0-ден 1013-ке дейін ал.'},
+ {q:'2ⁱ және 2ʲ (i≠j) сандарының көбейтіндісі неге тең?',o:['2ⁱʲ','2ⁱ⁺ʲ','2ⁱ⁻ʲ','4ⁱ⁺ʲ'],a:1,h:'Бірдей негізді дәрежелерді көбейту ережесін қолдан.'},
+ {q:'0≤i,j≤1013 және i≠j болса, i+j қосындысының ең кіші мүмкін мәні қандай?',o:['0','1','2','1013'],a:1,h:'Ең кіші екі әртүрлі индексті таңда: 0 және 1.'},
+ {q:'0≤i,j≤1013 және i≠j болса, i+j қосындысының ең үлкен мүмкін мәні қандай?',o:['2026','2025','2024','1013'],a:1,h:'Ең үлкен екі әртүрлі индексті таңда: 1012 және 1013.'},
+ {q:'Осы конструкцияда алынатын әртүрлі көбейтінділер 2¹,2²,…,2²⁰²⁵ болады. Олардың саны қанша?',o:['1013','2024','2025','2026'],a:2,h:'1-ден 2025-ке дейін неше бүтін көрсеткіш бар?'},
+ {q:'Біз |B|≥2025 екенін және |B|=2025 болатын мысал бар екенін көрсеттік. B файлындағы сандардың ең аз мүмкін саны қандай?',o:['1014','2026','2025','1013'],a:2,h:'Төменгі шекке дәл жететін мысал бар.'}]},
+{n:15,cat:'Комбинаторика',level:'Облыстық',title:'100×100 тақтадағы қуып жету',source:'2025 облыстық, 9-сынып №2',url:'https://matol.kz/olympiads/1144?lang=kz',problem:'100×100 ұяшықты тақтада A және B ойыншыларының бір-бір дойбысы бар. Бастапқыда A төменгі сол, B төменгі оң бұрышта. Ойыншылар кезектесіп, қабырғалас ұяшыққа бір қадам жүреді; A бастайды. B қалай жүрсе де, A шекті уақытта B тұрған ұяшыққа түсе алатынын дәлелде.',steps:[
+ {q:'Бұл есепте жай ғана жүрістерді санау жеткілікті ме, әлде A-ға тұрақты стратегия керек пе?',o:['A-ға B-ның әр жүрісіне жауап беретін стратегия керек','Тек барлық мүмкін жүрістер санын санау керек','B-ның нақты бір жүрісін алдын ала болжау керек'],a:0,h:'Шартта «B қалай жүрсе де» делінген.'},
+ {q:'Тақтаның қатарларын 1-ден 100-ге дейін нөмірлесек, A үшін алдымен қандай жағдайды бақылау ыңғайлы?',o:['A мен B қатарларының айырмасын','Тақтадағы барлық ұяшық санын','Тек A-ның жүрген қадам санын'],a:0,h:'B жоғары-төмен қозғалғанда осы шама өзгереді.'},
+ {q:'Егер A мен B бір қатарда немесе көршілес қатарларда тұрса, A-ның пайдалы жүрісі қандай?',o:['B тұрған бағанға қарай бір қадам көлденең жақындау','B-дан көлденең алыстау','Қатар айырмасын әдейі үлкейту'],a:0,h:'Қатар айырмасы аз кезде көлденең арақашықтықты қысқартуға болады.'},
+ {q:'Егер B тік бағытта A-дан алыстап, қатар айырмасын 2-ге жеткізсе, A не істейді?',o:['B тұрған жаққа бір қадам тік жүріп, қатар айырмасын қайта азайтады','Қарама-қарсы бағытта тік жүреді','Көлденең бағытта B-дан алыстайды'],a:0,h:'A B-ның тік қозғалысын қайталап, оны алыс жібермеуі керек.'},
+ {q:'Осы ереже бойынша A қандай екі әрекетті кезектестіреді?',o:['Қатар айырмасы аз болса көлденең жақындайды, айырма өссе тік бағытта ілеседі','Әрқашан тек жоғары жүреді','Әрқашан тек оңға жүреді'],a:0,h:'Бір әрекет арақашықтықты қысқартады, екіншісі B-ны тік бағытта бақылауда ұстайды.'},
+ {q:'B A-ның көлденең жақындауына кедергі жасау үшін не істеуге мәжбүр болады?',o:['Кей кездері тік бағытта қашуға','Тек A-ға қарай жүруге','Бір орында тұруға'],a:0,h:'Тек көлденең қашса, тақтаның шетіне тіреледі.'},
+ {q:'B неге бір бағытта көлденең шексіз қаша алмайды?',o:['Тақтада небәрі 100 баған бар','Әр жүрісте екі ұяшықтан аттайды','A оның жүрісін тоқтата алады'],a:0,h:'Тақта шекті.'},
+ {q:'B тік бағытта ұзақ қашса, неге бұл да мәңгі жалғаспайды?',o:['Тақтада небәрі 100 қатар бар, сондықтан шекараға тіреледі','Тік жүруге тыйым салынған','A бірден B-ның ұяшығына секіреді'],a:0,h:'Жоғары да, төмен де шекара бар.'},
+ {q:'Демек A стратегиясын қайталаған сайын қандай прогресс міндетті түрде болады?',o:['B-ның қашатын бос кеңістігі азаяды немесе A көлденең арақашықтықты қысқартады','Екі дойбының арасы міндетті түрде өседі','Тақтаның өлшемі үлкейеді'],a:0,h:'Шекті тақтада қашу мен жақындау циклін мәңгі қайталау мүмкін емес.'},
+ {q:'Ақырында A мен B қандай шағын конфигурацияға келтіріледі?',o:['Көршілес ұяшықтарға немесе A келесі жүрісте B-ға түсе алатын шекаралық жағдайға','Тақтаның қарама-қарсы бұрыштарына','Әрқашан бір диагональдың екі шетіне'],a:0,h:'Мақсат — A-ның бір жүрістік қашықтыққа келуі.'},
+ {q:'A-ның кезегі келгенде дойбылар қабырғалас ұяшықтарда тұрса, не болады?',o:['A бір қадам жасап B тұрған ұяшыққа түседі','B автоматты түрде жеңеді','A міндетті түрде басқа бағытқа жүреді'],a:0,h:'Бір жүрісте қабырғалас ұяшыққа өтуге болады.'},
+ {q:'Стратегия мен тақтаның шектілігін біріктірген қорытынды қандай?',o:['B қалай жүрсе де, A шекті жүріс санында B тұрған ұяшыққа түсе алады','B әрқашан A-дан қашып кете алады','Нәтиже тек кездейсоқ жүрістерге байланысты'],a:0,h:'Шекті тақта B-ның мәңгі қашуына мүмкіндік бермейді.'}]},
+{n:16,cat:'Комбинаторика',level:'Облыстық • жоғары',title:'Сенім графы және есептердің таралуы',source:'2026 облыстық, 9-сынып №1',url:'https://matol.kz/olympiads/1214?lang=kz',problem:'Кез келген екі автордың дәл біреуі екіншісіне сенеді. Күн сайын әр автор жаңа есепті және бұрын алған есептерін өзі сенетіндерге жібереді. Үшінші күні бір автор бірінші күні жіберген өз есебін қайта алмаса, кейбір авторларға мүлдем жетпейтін есеп бар екенін дәлелде.',steps:[
+ {q:'«A авторы B-ге сенеді» қатынасын қалай белгілеген ыңғайлы?',o:['A→B бағытталған қабырғасымен','A—B бағытталмаған қабырғасымен ғана','A=B теңдігімен'],a:0,h:'Сенімнің бағыты маңызды.'},
+ {q:'Кез келген екі автордың дәл біреуі екіншісіне сенеді деген шарт графта нені білдіреді?',o:['Әр екі төбенің арасында дәл бір бағытталған қабырға бар','Әр екі төбенің арасында екі бағыт та бар','Кейбір екі төбенің арасында қабырға жоқ'],a:0,h:'Мұндай бағытталған граф турнир деп аталады.'},
+ {q:'Бірінші күні A жіберген есеп үшінші күні A-ға қайтып келсе, қандай бағытталған тізбек пайда болар еді?',o:['A→B→C→A','A→B→A','A→A'],a:0,h:'Есеп күн сайын бір сенім бағыты бойынша әрі қарай беріледі.'},
+ {q:'Шарт бойынша A өз есебін үшінші күні алмады. Сондықтан A-ны қамтитын қандай құрылым жоқ?',o:['A→B→C→A түріндегі бағытталған 3-цикл','A-дан шығатын кез келген қабырға','A-ға кіретін кез келген қабырға'],a:0,h:'Алдыңғы қадамдағы қайту жолын терісте.'},
+ {q:'X={B: A→B} деп алайық. X жиынына кімдер кіреді?',o:['A сенетін авторлар','A-ға сенетін авторлар','A-ның өзі ғана'],a:0,h:'A→B бағытының мағынасын оқы.'},
+ {q:'Y={C: C→A} деп алайық. Y жиынына кімдер кіреді?',o:['A-ға сенетін авторлар','A сенетін авторлар','Ешкім кірмейді'],a:0,h:'C→A бағытының мағынасын оқы.'},
+ {q:'Кез келген B∈X және C∈Y үшін B→C болуы мүмкін бе?',o:['Жоқ, өйткені онда A→B→C→A 3-циклі пайда болады','Иә, міндетті түрде B→C','Бағытты анықтау мүмкін емес'],a:0,h:'A→B және C→A бағыттарын B→C-пен бірге жазып көр.'},
+ {q:'Әр екі автордың арасында бір ғана бағыт болғандықтан, B→C болмаса, B∈X және C∈Y үшін қай бағыт міндетті?',o:['C→B','B→C','Екі бағыт та'],a:0,h:'Турнир шарты бойынша үшінші мүмкіндік жоқ.'},
+ {q:'Демек X пен Y арасындағы барлық қабырғалар қай бағытта жүреді?',o:['Y→X','X→Y','Бағыттар аралас'],a:0,h:'Алдыңғы қадам барлық B∈X, C∈Y үшін орындалады.'},
+ {q:'Егер X бос емес болса, X-тегі бір автордың өз есебі X-тен Y-ге тікелей өте ала ма?',o:['Жоқ, өйткені X пен Y арасындағы бағыт Y→X','Иә, өйткені барлық бағыт X→Y','Тек үшінші күні ғана өте алады'],a:0,h:'Есеп тек автор сенетін бағытпен, яғни қабырға бағытымен тарайды.'},
+ {q:'X-тегі есеп A-ға өте ала ма?',o:['Жоқ, өйткені X анықтамасы бойынша A→B, яғни B→A жоқ','Иә, өйткені B∈X болса B→A','Әрқашан екі бағыт та бар'],a:0,h:'A мен B арасындағы жалғыз бағытты еске түсір.'},
+ {q:'X бос емес жағдайда қандай қорытынды шығады?',o:['X-тегі автордың есебі A∪Y авторларына ешқашан жетпейді','Барлық есеп барлық авторға жетеді','A-ның есебі міндетті түрде A-ға қайтады'],a:0,h:'X-тен сыртқа A немесе Y бағытына шығатын қабырға бар ма?'},
+ {q:'Ал X бос болса, A туралы не айтуға болады?',o:['A ешбір басқа авторға сенбейді, сондықтан A-ның есебі басқаларға таралмайды','Барлық автор A-ға емес, A барлық авторға сенеді','A-ның есебі бір күнде бәріне жетеді'],a:0,h:'X={B:A→B} бос дегенді тікелей түсіндір.'},
+ {q:'X бос және X бос емес жағдайларын біріктірсек, нені дәлелдедік?',o:['Кемінде бір есеп кейбір авторларға ешқашан жетпейді','Әр есеп міндетті түрде барлық авторға жетеді','Үшінші күні барлық есеп бастапқы авторына қайтады'],a:0,h:'Екі жағдай да есептің талап еткен қорытындысына әкеледі.'}]}
+
+];
+let socCat='Барлығы',socTask=null,socStep=0,socWrong=0,socHints=0,socStarted=0,socOptionOrder=[];
+function shuffledIndices(n){const a=Array.from({length:n},(_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function typesetSoc(){if(window.MathJax&&MathJax.typesetPromise) MathJax.typesetPromise().catch(()=>{});}
+const soc=document.getElementById('socraticApp'), home=document.getElementById('modeHome'), reviewer=document.getElementById('app');
+function mode(which){home.classList.add('hidden');soc.classList.add('hidden');reviewer.classList.add('hidden');if(which==='home')home.classList.remove('hidden');if(which==='soc') {soc.classList.remove('hidden');renderSocList();} if(which==='review')reviewer.classList.remove('hidden');window.scrollTo(0,0)}
+document.getElementById('openSocratic').onclick=()=>mode('soc');document.getElementById('openReviewer').onclick=()=>mode('review');
+document.getElementById('heroStart').onclick=()=>document.getElementById('modes').scrollIntoView({behavior:'smooth'});
+const platformAudio=new Audio('platform-about.mpeg');
+const voiceBtn=document.getElementById('platformVoice');
+voiceBtn.onclick=()=>{if(platformAudio.paused){platformAudio.play().catch(()=>alert('Аудионы ойнату мүмкін болмады.'));}else{platformAudio.pause();}};
+platformAudio.onplay=()=>{document.getElementById('voiceIcon').textContent='❚❚'};
+platformAudio.onpause=()=>{document.getElementById('voiceIcon').textContent='▶'};
+platformAudio.onended=()=>{document.getElementById('voiceIcon').textContent='▶';platformAudio.currentTime=0};
+function escSoc(x){return String(x).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function renderSocList(){const cats=['Барлығы','Алгебра','Геометрия','Сандар теориясы','Комбинаторика'];const list=SOC_TASKS.filter(t=>socCat==='Барлығы'||t.cat===socCat);soc.innerHTML=`<div class="card"><div class="soc-top"><div><div class="brand">💬 Сократтық диалог</div><h2 style="margin:6px 0">16 олимпиадалық есеп</h2><div class="mut">Дайын шешім жоқ: әр қадамда өзің шешім бағытын таңдайсың.</div></div><button class="soc-back" onclick="mode('home')">← Басты бет</button></div><div class="soc-tabs" style="margin-top:16px">${cats.map(c=>`<button class="soc-tab ${c===socCat?'active':''}" onclick="socCat='${c}';renderSocList()">${c}</button>`).join('')}</div></div><div class="soc-list">${list.map(t=>`<div class="soc-task" onclick="startSoc(${t.n})"><span class="soc-badge">№${t.n}</span><span class="soc-badge">${t.cat}</span><h3>${t.title}</h3><div class="meta">${t.level} • ${t.steps.length} жетелеу қадамы</div><div class="soc-source">${t.source}</div></div>`).join('')}</div>`}
+function startSoc(n){socTask=SOC_TASKS.find(t=>t.n===n);socStep=0;socWrong=0;socHints=0;socStarted=Date.now();socOptionOrder=[];renderSocStep()}
+function renderSocStep(){const t=socTask,st=t.steps[socStep],pct=Math.round(100*socStep/t.steps.length);soc.innerHTML=`<div class="card"><div class="soc-top"><div><div class="brand">№${t.n} • ${escSoc(t.cat)}</div><div class="soc-mini">${escSoc(t.level)} • ${escSoc(t.source)}</div></div><button class="soc-back" onclick="renderSocList()">← Есептер</button></div><div class="soc-meter" style="margin-top:14px"><div style="width:${pct}%"></div></div><div class="soc-mini" style="margin-top:6px">${socStep+1} / ${t.steps.length} қадам</div></div><div class="card"><h2>${escSoc(t.title)}</h2><div class="math">${escSoc(t.problem)}</div><div class="soc-q">${escSoc(st.q)}</div><div id="socChoices">${st.type==='free'?`<textarea id="socFree" placeholder="Жауабыңды өзің жаз..."></textarea><button class="primary" style="margin-top:10px" onclick="checkSocFree()">Жауапты тексер →</button>`:(socOptionOrder[socStep]||(socOptionOrder[socStep]=shuffledIndices(st.o.length))).map(i=>`<button class="soc-choice" onclick="answerSoc(${i},this)">${escSoc(st.o[i])}</button>`).join('')}</div><div id="socFb"></div><div class="actions"><button class="help" onclick="hintSoc()">Көмек керек</button><span class="soc-mini">Қате әрекет: <b id="socWrong">${socWrong}</b> • Көмек: <b>${socHints}</b></span></div></div>`;setTimeout(typesetSoc,0)}
+
+function checkSocFree(){const st=socTask.steps[socStep],v=(document.getElementById('socFree')?.value||'').trim(),fb=document.getElementById('socFb');if(!v){fb.innerHTML=`<div class="soc-feedback badbox"><b>Алдымен өз ойыңды жаз.</b><br>Бұл қадамда дайын нұсқа берілмейді.</div>`;return}document.getElementById('socFree').disabled=true;fb.innerHTML=`<div class="soc-feedback good"><b>Өз жауабыңды эталондық бағытпен салыстыр:</b><br>${st.expected}<br><br>Мағынасы сәйкес болса, жалғастыр.${socStep<socTask.steps.length-1?'<button class="primary" style="margin-top:10px" onclick="nextSoc()">Келесі сұрақ →</button>':'<button class="primary" style="margin-top:10px" onclick="finishSoc()">Дәлелдеуді аяқтау →</button>'}</div>`}
+function answerSoc(i,b){const st=socTask.steps[socStep],fb=document.getElementById('socFb');if(i===st.a){document.querySelectorAll('.soc-choice').forEach(x=>x.disabled=true);b.classList.add('correct');fb.innerHTML=`<div class="soc-feedback good"><b>Иә — бұл қадам негізделген.</b><br>Неге екенін өзіңе бір сөйлеммен түсіндіріп ал. ${socStep<socTask.steps.length-1?'<button class="primary" style="margin-top:10px" onclick="nextSoc()">Келесі сұрақ →</button>':'<button class="primary" style="margin-top:10px" onclick="finishSoc()">Дәлелдеуді аяқтау →</button>'}</div>`}else{socWrong++;document.getElementById('socWrong').textContent=socWrong;b.classList.add('wrong');b.disabled=true;fb.innerHTML=`<div class="soc-feedback badbox"><b>Бұл бағыт шешімге дәл апармайды.</b><br>Қай шартпен қайшы келетінін немесе неге жеткіліксіз екенін қайта тексер. Дұрыс нұсқаны қайта таңда.</div>`}}
+function hintSoc(){socHints++;const st=socTask.steps[socStep],fb=document.getElementById('socFb');fb.innerHTML=`<div class="soc-feedback soc-hint"><b>Бағыттаушы ишара:</b> ${escSoc(st.h)}</div>`;renderHintCount()}
+function renderHintCount(){const els=soc.querySelectorAll('.soc-mini b'); if(els.length>1) els[1].textContent=socHints}
+function nextSoc(){socStep++;renderSocStep()}
+function finishSoc(){const sec=Math.max(1,Math.round((Date.now()-socStarted)/1000));soc.innerHTML=`<div class="card soc-result"><div class="brand">СОКРАТТЫҚ ЦИКЛ АЯҚТАЛДЫ</div><div class="big">${socTask.steps.length}/${socTask.steps.length}</div><h2>№${socTask.n} есептің логикалық жолын өзің құрдың</h2><p class="mut">Тренажёр дайын шешімді бермей, шешуші байланыстарды өзіңе таңдауға мәжбүр етті.</p><div class="grid2" style="text-align:left"><div class="metric"><b>${socWrong}</b><br><span class="mut">қате әрекет</span></div><div class="metric"><b>${socHints}</b><br><span class="mut">көмек қолданылды</span></div><div class="metric"><b>${sec} с</b><br><span class="mut">орындау уақыты</span></div><div class="metric"><b>${socTask.level}</b><br><span class="mut">деңгей</span></div></div><div class="actions"><button class="soc-back" onclick="renderSocList()">← 16 есепке қайту</button>${socTask.n<16?`<button class="primary" onclick="startSoc(${socTask.n+1})">Келесі есеп →</button>`:''}</div></div>`}
+</script>
+</body></html>
