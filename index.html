@@ -1,3 +1,5 @@
+
+```
 <!doctype html>
 <html lang="kk">
 <head>
@@ -241,7 +243,22 @@ async function runSemanticReviewer(){
     const res=await fetch('/api/math-reviewer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     let d={}; try{d=await res.json()}catch(e){}
     if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
-    reviewerState='success'; reviewerResult=d;
+
+    // Reviewer жауабының құрылымын міндетті түрде тексеру.
+    // API 200 қайтарғанымен, reviewer_classification болмаса
+    // нәтижені жарамды Reviewer сараптамасы деп қабылдамау керек.
+    if(!d || typeof d !== 'object') {
+      throw new Error('Reviewer бос немесе жарамсыз жауап қайтарды.');
+    }
+    if(!/^L[0-8]$/.test(String(d.reviewer_classification||''))) {
+      throw new Error('Reviewer жауабында reviewer_classification жоқ немесе L0–L8 форматына сәйкес емес.');
+    }
+    if(!Array.isArray(d.step_reviews)) {
+      throw new Error('Reviewer қадамдық бағалауды қайтармады.');
+    }
+
+    reviewerState='success';
+    reviewerResult=d;
     status.classList.add('hidden'); report.classList.remove('hidden');
     const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     const steps=(d.step_reviews||[]).map(x=>`<div class="reviewer-item"><b>${esc(x.step)}-қадам • ${esc(x.status)}</b>${esc(x.feedback)}</div>`).join('');
@@ -598,3 +615,5 @@ function nextSoc(){socStep++;renderSocStep()}
 function finishSoc(){const sec=Math.max(1,Math.round((Date.now()-socStarted)/1000));soc.innerHTML=`<div class="card soc-result"><div class="brand">СОКРАТТЫҚ ЦИКЛ АЯҚТАЛДЫ</div><div class="big">${socTask.steps.length}/${socTask.steps.length}</div><h2>№${socTask.n} есептің логикалық жолын өзің құрдың</h2><p class="mut">Тренажёр дайын шешімді бермей, шешуші байланыстарды өзіңе таңдауға мәжбүр етті.</p><div class="grid2" style="text-align:left"><div class="metric"><b>${socWrong}</b><br><span class="mut">қате әрекет</span></div><div class="metric"><b>${socHints}</b><br><span class="mut">көмек қолданылды</span></div><div class="metric"><b>${sec} с</b><br><span class="mut">орындау уақыты</span></div><div class="metric"><b>${socTask.level}</b><br><span class="mut">деңгей</span></div></div><div class="actions"><button class="soc-back" onclick="renderSocList()">← 16 есепке қайту</button>${socTask.n<16?`<button class="primary" onclick="startSoc(${socTask.n+1})">Келесі есеп →</button>`:''}</div></div>`}
 </script>
 </body></html>
+
+```
