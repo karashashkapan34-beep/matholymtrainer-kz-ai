@@ -215,65 +215,28 @@ function updateComparison(){
   document.getElementById('comparison').textContent=s;
 }
 
-
 async function runSemanticReviewer(){
+
   const status=document.getElementById('reviewerStatus');
   const report=document.getElementById('reviewerReport');
   const offline=document.getElementById('reviewerOffline');
+
   if(!status||!report) return;
-  reviewerState='loading'; reviewerResult=null;
-  status.classList.remove('hidden'); report.classList.add('hidden'); offline.classList.add('hidden');
-  status.innerHTML='<div class="reviewer-loading">Reviewer математикалық мағынаны тексеріп жатыр…</div>';
+
+  reviewerState='loading';
+  reviewerResult=null;
+
+  status.classList.remove('hidden');
+  report.classList.add('hidden');
+  offline.classList.add('hidden');
+
+  status.innerHTML=
+    '<div class="reviewer-loading">Reviewer математикалық мағынаны тексеріп жатыр…</div>';
 
   const payload={
     topic:document.getElementById('topic')?.value||'',
     problem:document.getElementById('problem')?.value||'',
-    ai_solution:texts.map((t,i)=>({step:i+1,text:t})),
-    ai_conclusion:aiConclusion||'',
-    student_ratings:texts.map((_,i)=>({step:i+1,rating:ratings[i]||''})),
-    student_analyses:Object.keys(analyses).map(k=>({
-      step:Number(k)+1, initial_rating:ratings[k]||'', initial_reason:analyses[k]?.reason||'',
-      help_used:!!analyses[k]?.help, correction:analyses[k]?.repair||'', reconsidered_rating:analyses[k]?.recheck||''
-    })),
-    overall_verdict:verdict||'', student_classification:cls||'',
-    classification_reason:document.getElementById('classReason')?.value||''
-  };
-  try{
-    const res=await fetch('/api/math-reviewer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    let d={}; try{d=await res.json()}catch(e){}
-    if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
 
-    // Reviewer жауабының құрылымын міндетті түрде тексеру.
-    // API 200 қайтарғанымен, reviewer_classification болмаса
-    // нәтижені жарамды Reviewer сараптамасы деп қабылдамау керек.
-    if(!d || typeof d !== 'object') {
-      throw new Error('Reviewer бос немесе жарамсыз жауап қайтарды.');
-    }
-    if(!/^L[0-8]$/.test(String(d.reviewer_classification||''))) {
-      throw new Error('Reviewer жауабында reviewer_classification жоқ немесе L0–L8 форматына сәйкес емес.');
-    }
-    if(!Array.isArray(d.step_reviews)) {
-      throw new Error('Reviewer қадамдық бағалауды қайтармады.');
-    }
-
-    reviewerState='success';
-    reviewerResult=d;
-    status.classList.add('hidden'); report.classList.remove('hidden');
-    const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-    const steps=(d.step_reviews||[]).map(x=>`<div class="reviewer-item"><b>${esc(x.step)}-қадам • ${esc(x.status)}</b>${esc(x.feedback)}</div>`).join('');
-    report.innerHTML=`<div class="reviewer-card"><div class="reviewer-ok">✓ Тәуелсіз мағыналық тексеру аяқталды</div><p><b>Негізгі математикалық мәселе:</b> ${esc(d.root_issue)}</p><div class="reviewer-grid">${steps}</div></div>
-      <div class="callout good"><b>Оқушының негіздемесін бағалау:</b><br>${esc(d.student_reasoning_feedback)}</div>
-      <div class="callout info"><b>Дұрыс математикалық бағыт:</b><br>${esc(d.correct_reasoning)}</div>
-      <div class="callout ${d.classification_match?'good':'warn'}"><b>L0–L8 сараптамасы:</b> Reviewer — ${esc(d.reviewer_classification)}. ${d.classification_match?'Оқушының жіктеуімен сәйкес.':'Оқушының жіктеуімен сәйкес емес.'}<br>${esc(d.classification_explanation)}</div>
-      <div class="callout info"><b>Бағалау деңгейі:</b> ${esc(d.student_reasoning_level)}<br><b>Сенімділік:</b> ${esc(d.confidence)}</div>`;
-    if(window.MathJax?.typesetPromise){try{window.MathJax.typesetClear([report]);}catch(e){} window.MathJax.typesetPromise([report]).catch(()=>{});}
-    try{localStorage.setItem('MathOlymTRAINER_P8_LAST_REVIEW',JSON.stringify(d));}catch(e){}
-  }catch(err){
-    reviewerState='failed'; reviewerResult=null;
-    status.classList.add('hidden'); offline.classList.remove('hidden');
-    offline.innerHTML='<b>Тәуелсіз тексеру уақытша орындалмады.</b><br>1–6 кезеңдегі деректер жоғалған жоқ. Бұл нәтиже L0–L8 санатын автоматты түрде өзгертпейді. Қажет болса, кейін қайта тексеруге болады.<br><small>'+String(err.message||err)+'</small>';
-  }
-}
 
 
 document.getElementById('toReflection').addEventListener('click',()=>show(8));
